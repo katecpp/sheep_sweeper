@@ -7,8 +7,7 @@ CTableModel::CTableModel(QObject *parent)
     : QAbstractTableModel(parent),
       m_model(nullptr)
 {
-    m_model = new CModel(10,10);
-    m_model->populate();
+    newGame();
     //TODO: delay populating until user clicks first field
 }
 
@@ -42,11 +41,12 @@ QVariant CTableModel::data(const QModelIndex &index, int role) const
 
 void CTableModel::newGame()
 {
-    qDebug() << "NEW GAME";
+    qDebug() << "New game";
 
-    if (m_model)
+    if (m_model != nullptr)
     {
         delete m_model;
+        m_model = nullptr;
     }
 
     m_model = new CModel(10,10);
@@ -62,9 +62,19 @@ void CTableModel::onTableClicked(const QModelIndex &index)
     if (m_model->field(index.row(), index.column()).sheep)
     {
         qDebug() << "You loose!";
+        emit gameLost();
+        //TODO: freeze the view
+    }
+
+    if (m_model->checkIfWon())
+    {
+        qDebug() << "You win!";
+        emit gameWon();
+        //TODO: discover all when won
     }
 }
 
+//TODO: do not discover secured fields
 void CTableModel::discover(const QModelIndex &index)
 {
     const int32_t x = index.row();
@@ -89,7 +99,7 @@ void CTableModel::discover(const QModelIndex &index)
 
 void CTableModel::onRightClicked(const QModelIndex &index)
 {
-    qDebug() << " Right clicked: " << index.row() << "," << index.column();
+    qDebug() << "Right clicked: " << index.row() << "," << index.column();
     m_model->disarm(index.row(), index.column());
     qDebug() << m_model->field(index.row(), index.column()).disarmed;
     emit dataChanged(index, index);

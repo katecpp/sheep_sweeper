@@ -14,7 +14,9 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
 signals:
-
+    //TODO: connect these signals
+    void gameWon();
+    void gameLost();
 public slots:
     void newGame();
     void onTableClicked(const QModelIndex &index);

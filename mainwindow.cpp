@@ -38,6 +38,7 @@ void MainWindow::initTable()
     m_view->horizontalHeader()->setMinimumSectionSize(1);
     m_view->verticalHeader()->setMinimumSectionSize(1);
     m_view->setModel(m_model);
+    m_view->setSelectionMode(QAbstractItemView::NoSelection);
 
     CFieldDelegate *delegate = new CFieldDelegate(this);
     m_view->setItemDelegate(delegate);
@@ -55,6 +56,7 @@ void MainWindow::initMenubar()
     QMenu *fileMenu = new QMenu(tr("&File"), this);
 
     QAction *newGameAction = fileMenu->addAction(tr("&New game"));
+    newGameAction->setShortcut(QKeySequence::New);
 
     QAction *quitAction = fileMenu->addAction(tr("E&xit"));
     quitAction->setShortcut(QKeySequence::Quit);
@@ -76,12 +78,13 @@ void MainWindow::initConnections()
     connect(m_view, SIGNAL(clicked(const QModelIndex &)), m_model, SLOT(onTableClicked(const QModelIndex &)));
     connect(m_view, SIGNAL(rightClicked(const QModelIndex&)), m_model, SLOT(onRightClicked(const QModelIndex&)));
     //TODO: connections to Qt5 style
+    //TODO: pressed event
 }
 
 void MainWindow::newGame()
 {
-    qDebug() << "New game";
     m_model->newGame();
+    m_view->reset();
 }
 
 void MainWindow::showAboutBox()

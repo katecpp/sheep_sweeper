@@ -1,7 +1,6 @@
 #include <CModel.h>
 #include <cstdlib>
 #include <ctime>
-#include <assert.h>
 #include <QDebug>
 
 using std::rand;
@@ -10,6 +9,7 @@ CModel::CModel(int32_t size, int32_t sheepNumber)
     : m_size(size)
     , m_totalSheepNr(sheepNumber)
     , m_lurkingSheepNr(sheepNumber)
+    , m_discoveredFieldsNr(0)
     , m_data()
 {
     uint64_t fieldsNumber = m_size * m_size;
@@ -17,8 +17,11 @@ CModel::CModel(int32_t size, int32_t sheepNumber)
     m_data.insert(m_data.begin(), fieldsNumber, SField());
 
     srand(std::time(0));
+}
 
-    qDebug() << "CModel initialized succesfully";
+bool CModel::checkIfWon() const
+{
+    return (count() - m_discoveredFieldsNr) == m_totalSheepNr;
 }
 
 void CModel::populate()
@@ -29,18 +32,18 @@ void CModel::populate()
 
 void CModel::populateSheepCrew()
 {
+    Q_ASSERT(m_totalSheepNr <= count());
     int64_t sheepMade = 0;
 
     while (sheepMade < m_totalSheepNr)
     {
         uint64_t fieldId = rand() % count();
-        assert(fieldId < m_data.size());
+        Q_ASSERT(fieldId < m_data.size());
 
         if (0 == m_data[fieldId].sheep)
         {
             m_data[fieldId].sheep = 1;
             sheepMade++;
-            qDebug() << "Sheep made on field " << fieldId;
         }
     }
 
@@ -95,7 +98,11 @@ uint8_t CModel::getDiscoverValue(int32_t x, int32_t y) const
 
 void CModel::discover(int32_t x, int32_t y)
 {
-    field(x, y).discovered = 1;
+    if (field(x, y).discovered == 0)
+    {
+        field(x, y).discovered = 1;
+        m_discoveredFieldsNr++;
+    }
 }
 
 void CModel::disarm(int32_t x, int32_t y)

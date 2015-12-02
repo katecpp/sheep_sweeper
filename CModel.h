@@ -10,10 +10,13 @@ class CModel
 public:
     CModel(int32_t size, int32_t sheepNumber);
 
+    bool        checkIfWon() const;
+
     uint8_t     getSheepValue(int32_t x, int32_t y) const;
     uint8_t     getDiscoverValue(int32_t x, int32_t y) const;
     int32_t     size() const { return m_size; }
     uint64_t    count() const { return m_size * m_size; }
+
     void        populate();
     void        printDebug() const;
 
@@ -31,6 +34,7 @@ private:
     int32_t             m_size;
     int32_t             m_totalSheepNr;
     int32_t             m_lurkingSheepNr;
+    int32_t             m_discoveredFieldsNr;
     std::vector<SField> m_data;
 };
 
