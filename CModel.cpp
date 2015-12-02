@@ -1,23 +1,24 @@
 #include <CModel.h>
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
 #include <assert.h>
+#include <QDebug>
 
-using std::cout;
 using std::rand;
 
 CModel::CModel(int32_t size, int32_t sheepNumber)
     : m_size(size)
-    , m_sheepNumber(sheepNumber)
+    , m_totalSheepNr(sheepNumber)
+    , m_lurkingSheepNr(sheepNumber)
+    , m_data()
 {
     uint64_t fieldsNumber = m_size * m_size;
     m_data.reserve(fieldsNumber);
-    m_data.insert(m_data.begin(), fieldsNumber, SField{0,0,0,0,0});
+    m_data.insert(m_data.begin(), fieldsNumber, SField());
 
     srand(std::time(0));
 
-    cout << "CModel initialized succesfully" << std::endl;
+    qDebug() << "CModel initialized succesfully";
 }
 
 void CModel::populate()
@@ -28,9 +29,9 @@ void CModel::populate()
 
 void CModel::populateSheepCrew()
 {
-    uint64_t sheepMade = 0;
+    int64_t sheepMade = 0;
 
-    while (sheepMade < m_sheepNumber)
+    while (sheepMade < m_totalSheepNr)
     {
         uint64_t fieldId = rand() % count();
         assert(fieldId < m_data.size());
@@ -39,18 +40,18 @@ void CModel::populateSheepCrew()
         {
             m_data[fieldId].sheep = 1;
             sheepMade++;
-            cout << "Sheep made on field " << fieldId << std::endl;
+            qDebug() << "Sheep made on field " << fieldId;
         }
     }
 
-    cout << "Sheep crew is ready..." << std::endl;
+    qDebug() << "Sheep crew is ready...";
 }
 
 void CModel::populateNeighbourhood()
 {
-    for (uint32_t x = 0; x < m_size; ++x)
+    for (int32_t x = 0; x < m_size; ++x)
     {
-        for (uint32_t y = 0; y < m_size; ++y)
+        for (int32_t y = 0; y < m_size; ++y)
         {
             uint8_t sheepValue =
                     getSheepValue   (x-1,   y-1) // up
@@ -77,6 +78,18 @@ uint8_t CModel::getSheepValue(int32_t x, int32_t y) const
     else
     {
         return 0;
+    }
+}
+
+uint8_t CModel::getDiscoverValue(int32_t x, int32_t y) const
+{
+    if (x >= 0 && x < m_size && y >= 0 && y < m_size)
+    {
+        return field(x,y).discovered;
+    }
+    else
+    {
+        return true;
     }
 }
 
@@ -111,11 +124,11 @@ void CModel::printDebug() const
     {
         if (i > 0 && i % m_size == 0)
         {
-            cout << std::endl;
+            qDebug() << "\n";
         }
 
-        std::string f = "[" + (m_data[i].sheep ? "x" : std::to_string(m_data[i].neighbours)) + "]";
-        cout << f;
+        QString f = "[" + (m_data[i].sheep ? "x" : QString::number(m_data[i].neighbours)) + "]";
+        qDebug() << f;
     }
 }
 

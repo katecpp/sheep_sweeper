@@ -3,13 +3,17 @@
 
 #include <QObject>
 #include <QTableView>
+#include <QMouseEvent>
 
 class CTableView : public QTableView
 {
     Q_OBJECT
 public:
     CTableView(QWidget *parent = 0);
-    // TODO: mouse events capture
+    virtual void mouseReleaseEvent(QMouseEvent* event);
+
+signals:
+    void rightClicked(const QModelIndex& index);
 };
 
 #endif // CTABLEVIEW_H

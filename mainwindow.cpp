@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     initTable();
     initMenubar();
+    initConnections();
 }
 
 MainWindow::~MainWindow()
@@ -45,16 +46,16 @@ void MainWindow::initTable()
     setWindowTitle(tr(APP_NAME()));
     resize(290, 340);
     // FIXME: set proper window size
-
-    qDebug() << "MainWindow initialed successfully";
 }
 
 void MainWindow::initMenubar()
 {
     QMenu *fileMenu = new QMenu(tr("&File"), this);
 
+    QAction *newGameAction = fileMenu->addAction(tr("&New game"));
+
     QAction *quitAction = fileMenu->addAction(tr("E&xit"));
-    quitAction->setShortcuts(QKeySequence::Quit);
+    quitAction->setShortcut(QKeySequence::Quit);
 
     QMenu *helpMenu = new QMenu(tr("&Help"), this);
     QAction *aboutAction = helpMenu->addAction(tr("&About"));
@@ -63,8 +64,22 @@ void MainWindow::initMenubar()
     menuBar()->addSeparator();
     menuBar()->addMenu(helpMenu);
 
+    connect(newGameAction, SIGNAL(triggered()), this, SLOT(newGame()));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(showAboutBox()));
+}
+
+void MainWindow::initConnections()
+{
+    connect(m_view, SIGNAL(clicked(const QModelIndex &)), m_model, SLOT(onTableClicked(const QModelIndex &)));
+    connect(m_view, SIGNAL(rightClicked(const QModelIndex&)), m_model, SLOT(onRightClicked(const QModelIndex&)));
+    //TODO: connections to Qt5 style
+}
+
+void MainWindow::newGame()
+{
+    qDebug() << "New game";
+    m_model->newGame();
 }
 
 void MainWindow::showAboutBox()

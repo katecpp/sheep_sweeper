@@ -16,17 +16,34 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     SField field = index.model()->data(index, Qt::UserRole).value<SField>();
 
     QStyleOptionButton buttonStyle;
-    buttonStyle.state |= QStyle::State_Raised | QStyle::State_Enabled | option.state;
     buttonStyle.rect = option.rect;
 
-    if (field.sheep != 0)
+    if (field.discovered)
     {
-        buttonStyle.icon = QIcon(QPixmap(":/images/images/small_sheep.png"));
-        buttonStyle.iconSize = QSize(16, 16);
+        buttonStyle.state |= QStyle::State_Sunken | QStyle::State_Enabled | option.state;
+
+        if (field.sheep != 0)
+        {
+            buttonStyle.icon = QIcon(QPixmap(":/images/images/small_sheep.png"));
+            buttonStyle.iconSize = QSize(16, 16);
+        }
+        else if (field.neighbours != 0)
+        {
+            buttonStyle.text = QString::number(field.neighbours);
+        }
     }
     else
     {
-        buttonStyle.text = QString::number(field.neighbours);
+        if (field.disarmed)
+        {
+            buttonStyle.state |= QStyle::State_Sunken | QStyle::State_Enabled | option.state;
+            buttonStyle.icon = QIcon(QPixmap(":/images/images/disarmed.png"));
+            buttonStyle.iconSize = QSize(16, 16);
+        }
+        else
+        {
+            buttonStyle.state |= QStyle::State_Raised | QStyle::State_Enabled | option.state;
+        }
     }
 
     QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonStyle, painter,

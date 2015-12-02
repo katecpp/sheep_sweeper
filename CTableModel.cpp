@@ -9,6 +9,7 @@ CTableModel::CTableModel(QObject *parent)
 {
     m_model = new CModel(10,10);
     m_model->populate();
+    //TODO: delay populating until user clicks first field
 }
 
 int CTableModel::rowCount(const QModelIndex &parent) const
@@ -37,4 +38,59 @@ QVariant CTableModel::data(const QModelIndex &index, int role) const
     }
 
     return QVariant();
+}
+
+void CTableModel::newGame()
+{
+    qDebug() << "NEW GAME";
+
+    if (m_model)
+    {
+        delete m_model;
+    }
+
+    m_model = new CModel(10,10);
+    m_model->populate();
+}
+
+void CTableModel::onTableClicked(const QModelIndex &index)
+{
+    qDebug() << "Clicked: " << index.row() << "," << index.column();
+
+    discover(index);
+
+    if (m_model->field(index.row(), index.column()).sheep)
+    {
+        qDebug() << "You loose!";
+    }
+}
+
+void CTableModel::discover(const QModelIndex &index)
+{
+    const int32_t x = index.row();
+    const int32_t y = index.column();
+
+    m_model->discover(x, y);
+
+    if (m_model->field(x, y).neighbours == 0 && m_model->field(x, y).sheep == 0)
+    {
+        if (!m_model->getDiscoverValue(x-1, y-1))   discover(index.sibling(x-1, y-1)); // up
+        if (!m_model->getDiscoverValue(x, y-1))     discover(index.sibling(x,   y-1));
+        if (!m_model->getDiscoverValue(x+1, y-1))   discover(index.sibling(x+1, y-1));
+        if (!m_model->getDiscoverValue(x-1, y))     discover(index.sibling(x-1, y));   // mid
+        if (!m_model->getDiscoverValue(x+1, y))     discover(index.sibling(x+1, y));
+        if (!m_model->getDiscoverValue(x-1, y+1))   discover(index.sibling(x-1, y+1)); // down
+        if (!m_model->getDiscoverValue(x, y+1))     discover(index.sibling(x,   y+1));
+        if (!m_model->getDiscoverValue(x+1, y+1))   discover(index.sibling(x+1, y+1));
+    }
+
+    emit dataChanged(index, index);
+}
+
+void CTableModel::onRightClicked(const QModelIndex &index)
+{
+    qDebug() << " Right clicked: " << index.row() << "," << index.column();
+    m_model->disarm(index.row(), index.column());
+    qDebug() << m_model->field(index.row(), index.column()).disarmed;
+    emit dataChanged(index, index);
 }

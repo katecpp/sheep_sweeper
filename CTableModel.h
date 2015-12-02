@@ -16,8 +16,12 @@ public:
 signals:
 
 public slots:
-
+    void newGame();
+    void onTableClicked(const QModelIndex &index);
+    void onRightClicked(const QModelIndex &index);
 private:
+    void discover(const QModelIndex &index);
+
     CModel* m_model;
 };
 

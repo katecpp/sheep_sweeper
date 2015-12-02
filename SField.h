@@ -5,6 +5,8 @@
 
 struct SField
 {
+    SField() : sheep(0), discovered(0), disarmed(0), secured(0), neighbours(0) {}
+
     uint8_t sheep       : 1;
     uint8_t discovered  : 1;
     uint8_t disarmed    : 1;

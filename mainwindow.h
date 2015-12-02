@@ -18,6 +18,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void newGame();
     void showAboutBox();
     void updateView();
 
@@ -26,6 +27,7 @@ private:
 
     void initTable();
     void initMenubar();
+    void initConnections();
 
     Ui::MainWindow*     ui;
     CTableModel*        m_model;
