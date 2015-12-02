@@ -3,5 +3,6 @@
         <file>images/small_sheep.png</file>
         <file>images/disarmed.png</file>
         <file>images/question.png</file>
+        <file>images/big_sheep.png</file>
     </qresource>
 </RCC>

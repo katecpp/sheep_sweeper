@@ -12,9 +12,15 @@ MainWindow::MainWindow(QWidget *parent) :
     m_view(nullptr)
 {
     ui->setupUi(this);
+
     initTable();
     initMenubar();
     initConnections();
+
+    setWindowIcon(QIcon(QPixmap(":/images/images/big_sheep.png")));
+    setWindowTitle(tr(APP_NAME()));
+    resize(290, 340);
+    // FIXME: set proper window size
 }
 
 MainWindow::~MainWindow()
@@ -42,10 +48,6 @@ void MainWindow::initTable()
     centralWidget->setLayout(mainLayout);
 
     setCentralWidget(centralWidget);
-
-    setWindowTitle(tr(APP_NAME()));
-    resize(290, 340);
-    // FIXME: set proper window size
 }
 
 void MainWindow::initMenubar()
