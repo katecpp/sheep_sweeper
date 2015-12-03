@@ -21,6 +21,8 @@ public slots:
     void newGame();
     void showAboutBox();
     void updateView();
+    void onGameLost();
+    void onGameWon();
 
 private:
     static const char* APP_NAME() { return "Sheep sweeper 0.1"; }
@@ -28,6 +30,7 @@ private:
     void initTable();
     void initMenubar();
     void initConnections();
+    void initStatusBar();
 
     Ui::MainWindow*     ui;
     CTableModel*        m_model;

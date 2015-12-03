@@ -98,7 +98,7 @@ uint8_t CModel::getDiscoverValue(int32_t x, int32_t y) const
 
 void CModel::discover(int32_t x, int32_t y)
 {
-    if (field(x, y).discovered == 0)
+    if (field(x, y).discovered == 0 && field(x,y).disarmed == 0 && field(x,y).secured == 0)
     {
         field(x, y).discovered = 1;
         m_discoveredFieldsNr++;

@@ -55,26 +55,29 @@ void CTableModel::newGame()
 
 void CTableModel::onTableClicked(const QModelIndex &index)
 {
-    qDebug() << "Clicked: " << index.row() << "," << index.column();
+    int32_t x = index.row();
+    int32_t y = index.column();
+    qDebug() << "Clicked: " << x << "," << y;
 
-    discover(index);
-
-    if (m_model->field(index.row(), index.column()).sheep)
+    if (m_model->field(x, y).disarmed == 0 && m_model->field(x, y).secured == 0)
     {
-        qDebug() << "You loose!";
-        emit gameLost();
-        //TODO: freeze the view
-    }
+        discover(index);
 
-    if (m_model->checkIfWon())
-    {
-        qDebug() << "You win!";
-        emit gameWon();
-        //TODO: discover all when won
+        if (m_model->field(index.row(), index.column()).sheep)
+        {
+            qDebug() << "You loose!";
+            emit gameLost();
+        }
+
+        if (m_model->checkIfWon())
+        {
+            qDebug() << "You win!";
+            emit gameWon();
+            //TODO: discover all when won
+        }
     }
 }
 
-//TODO: do not discover secured fields
 void CTableModel::discover(const QModelIndex &index)
 {
     const int32_t x = index.row();

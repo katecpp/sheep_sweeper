@@ -14,8 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     initTable();
-    initMenubar();
     initConnections();
+    initMenubar();
+    initStatusBar();
 
     setWindowIcon(QIcon(QPixmap(":/images/images/big_sheep.png")));
     setWindowTitle(tr(APP_NAME()));
@@ -73,11 +74,19 @@ void MainWindow::initMenubar()
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(showAboutBox()));
 }
 
+void  MainWindow::initStatusBar()
+{
+    statusBar()->showMessage(tr("Sheep are looking at you..."), 5000);
+}
+
 void MainWindow::initConnections()
 {
-    connect(m_view, SIGNAL(clicked(const QModelIndex &)), m_model, SLOT(onTableClicked(const QModelIndex &)));
-    connect(m_view, SIGNAL(rightClicked(const QModelIndex&)), m_model, SLOT(onRightClicked(const QModelIndex&)));
-    //TODO: connections to Qt5 style
+    connect(m_view, &CTableView::clicked,       m_model, &CTableModel::onTableClicked);
+    connect(m_view, &CTableView::rightClicked,  m_model, &CTableModel::onRightClicked);
+
+    connect(m_model, &CTableModel::gameLost,    this,   &MainWindow::onGameLost);
+    connect(m_model, &CTableModel::gameWon,     this,   &MainWindow::onGameWon);
+
     //TODO: pressed event
 }
 
@@ -85,6 +94,18 @@ void MainWindow::newGame()
 {
     m_model->newGame();
     m_view->reset();
+    m_view->setEnabled(true);
+}
+
+void MainWindow::onGameLost()
+{
+    m_view->setDisabled(true);
+    statusBar()->showMessage(tr("Unfortunately, you died."), 5000);
+}
+
+void MainWindow::onGameWon()
+{
+    statusBar()->showMessage(tr("You won!"), 5000);
 }
 
 void MainWindow::showAboutBox()
