@@ -19,6 +19,7 @@ CModel::CModel(int32_t size, int32_t sheepNumber)
     srand(std::time(0));
 }
 
+//BUG: Once returned false positive
 bool CModel::checkIfWon() const
 {
     return (count() - m_discoveredFieldsNr) == m_totalSheepNr;
@@ -98,7 +99,7 @@ uint8_t CModel::getDiscoverValue(int32_t x, int32_t y) const
 
 void CModel::discover(int32_t x, int32_t y)
 {
-    if (field(x, y).discovered == 0 && field(x,y).disarmed == 0 && field(x,y).secured == 0)
+    if (field(x, y).discovered == 0 && field(x,y).disarmed == 0)
     {
         field(x, y).discovered = 1;
         m_discoveredFieldsNr++;
@@ -107,12 +108,14 @@ void CModel::discover(int32_t x, int32_t y)
 
 void CModel::disarm(int32_t x, int32_t y)
 {
-    field(x, y).disarmed = 1;
-}
-
-void CModel::secure(int32_t x, int32_t y)
-{
-    field(x, y).secured = 1;
+    if (field(x, y).disarmed < 2)
+    {
+        field(x, y).disarmed++;
+    }
+    else if (field(x, y).disarmed == 2)
+    {
+        field(x, y).disarmed = 0;
+    }
 }
 
 const SField& CModel::field(int32_t x, int32_t y) const

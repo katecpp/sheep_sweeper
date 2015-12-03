@@ -59,7 +59,7 @@ void CTableModel::onTableClicked(const QModelIndex &index)
     int32_t y = index.column();
     qDebug() << "Clicked: " << x << "," << y;
 
-    if (m_model->field(x, y).disarmed == 0 && m_model->field(x, y).secured == 0)
+    if (m_model->field(x, y).disarmed == 0)
     {
         discover(index);
 
@@ -102,8 +102,13 @@ void CTableModel::discover(const QModelIndex &index)
 
 void CTableModel::onRightClicked(const QModelIndex &index)
 {
-    qDebug() << "Right clicked: " << index.row() << "," << index.column();
-    m_model->disarm(index.row(), index.column());
-    qDebug() << m_model->field(index.row(), index.column()).disarmed;
-    emit dataChanged(index, index);
+    int32_t x = index.row();
+    int32_t y = index.column();
+    qDebug() << "Right clicked: " << x << "," << y;
+
+    if (m_model->field(x, y).discovered == 0)
+    {
+        m_model->disarm(x, y);
+        emit dataChanged(index, index);
+    }
 }

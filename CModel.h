@@ -22,7 +22,6 @@ public:
 
     void discover(int32_t x, int32_t y);
     void disarm(int32_t x, int32_t y);
-    void secure(int32_t x, int32_t y);
 
     SField& field(int32_t x, int32_t y);
     const SField& field(int32_t x, int32_t y) const;

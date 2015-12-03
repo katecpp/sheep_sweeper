@@ -17,6 +17,7 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
     QStyleOptionButton buttonStyle;
     buttonStyle.rect = option.rect;
+    buttonStyle.iconSize = QSize(16, 16);
 
     if (field.discovered)
     {
@@ -25,7 +26,7 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         if (field.sheep != 0)
         {
             buttonStyle.icon = QIcon(QPixmap(":/images/images/small_sheep.png"));
-            buttonStyle.iconSize = QSize(16, 16);
+
         }
         else if (field.neighbours != 0)
         {
@@ -34,15 +35,15 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     }
     else
     {
-        if (field.disarmed)
+        buttonStyle.state |= QStyle::State_Raised | QStyle::State_Enabled | option.state;
+
+        if (field.disarmed == 1)
         {
-            buttonStyle.state |= QStyle::State_Sunken | QStyle::State_Enabled | option.state;
             buttonStyle.icon = QIcon(QPixmap(":/images/images/disarmed.png"));
-            buttonStyle.iconSize = QSize(16, 16);
         }
-        else
+        else if (field.disarmed == 2)
         {
-            buttonStyle.state |= QStyle::State_Raised | QStyle::State_Enabled | option.state;
+            buttonStyle.icon = QIcon(QPixmap(":/images/images/question.png"));
         }
     }
 
