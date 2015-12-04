@@ -17,16 +17,19 @@ SOURCES += main.cpp\
     CModel.cpp \
     CFieldDelegate.cpp \
     CTableModel.cpp \
-    CTableView.cpp
+    CTableView.cpp \
+    CTopWidget.cpp
 
 HEADERS  += mainwindow.h \
     CModel.h \
     CFieldDelegate.h \
     SField.h \
     CTableModel.h \
-    CTableView.h
+    CTableView.h \
+    CTopWidget.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    CTopWidget.ui
 
 CONFIG   += c++14
 

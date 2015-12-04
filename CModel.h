@@ -8,14 +8,14 @@
 class CModel
 {
 public:
-    CModel(int32_t size, int32_t sheepNumber);
+    CModel(int32_t xSize, int32_t sheepNumber);
 
     bool        checkIfWon() const;
 
     uint8_t     getSheepValue(int32_t x, int32_t y) const;
     uint8_t     getDiscoverValue(int32_t x, int32_t y) const;
-    int32_t     size() const { return m_size; }
-    uint64_t    count() const { return m_size * m_size; }
+    int32_t     xSize() const { return m_xSize; }
+    uint64_t    count() const { return m_xSize * m_xSize; }
 
     void        populate();
     void        printDebug() const;
@@ -30,7 +30,7 @@ private:
     void populateSheepCrew();
     void populateNeighbourhood();
 
-    int32_t             m_size;
+    int32_t             m_xSize;
     int32_t             m_totalSheepNr;
     int32_t             m_lurkingSheepNr;
     int32_t             m_discoveredFieldsNr;

@@ -4,12 +4,14 @@
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QDebug>
+#include <CTopWidget.h>
+#include <QTimer>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_model(nullptr),
-    m_view(nullptr)
+    m_timer(nullptr)
 {
     ui->setupUi(this);
 
@@ -17,10 +19,11 @@ MainWindow::MainWindow(QWidget *parent) :
     initConnections();
     initMenubar();
     initStatusBar();
+    initTimer();
 
     setWindowIcon(QIcon(QPixmap(":/images/images/big_sheep.png")));
     setWindowTitle(tr(APP_NAME()));
-    resize(290, 340);
+    //resize(340, 360);
     // FIXME: set proper window size
 }
 
@@ -31,25 +34,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::initTable()
 {
-    m_model = new CTableModel(this);
-    m_view  = new CTableView(this);
-    m_view->setShowGrid(false);
-    m_view->horizontalHeader()->hide();
-    m_view->verticalHeader()->hide();
-    m_view->horizontalHeader()->setMinimumSectionSize(1);
-    m_view->verticalHeader()->setMinimumSectionSize(1);
-    m_view->setModel(m_model);
-    m_view->setSelectionMode(QAbstractItemView::NoSelection);
+    m_model = new CTableModel(10, 10, 10, this);
+
+    ui->m_view->setShowGrid(false);
+    ui->m_view->horizontalHeader()->hide();
+    ui->m_view->verticalHeader()->hide();
+    ui->m_view->horizontalHeader()->setMinimumSectionSize(1);
+    ui->m_view->verticalHeader()->setMinimumSectionSize(1);
+    ui->m_view->setModel(m_model);
+    ui->m_view->setSelectionMode(QAbstractItemView::NoSelection);
+    //ui->m_view->resize(250,250);
 
     CFieldDelegate *delegate = new CFieldDelegate(this);
-    m_view->setItemDelegate(delegate);
-
-    QWidget *centralWidget = new QWidget;
-    QVBoxLayout *mainLayout = new QVBoxLayout;
-    mainLayout->addWidget(m_view);
-    centralWidget->setLayout(mainLayout);
-
-    setCentralWidget(centralWidget);
+    ui->m_view->setItemDelegate(delegate);
 }
 
 void MainWindow::initMenubar()
@@ -79,10 +76,19 @@ void  MainWindow::initStatusBar()
     statusBar()->showMessage(tr("Sheep are looking at you..."), 5000);
 }
 
+void MainWindow::initTimer()
+{
+    m_timer = new QTimer(this);
+    m_timer->setInterval(1000);
+    connect(m_timer, &QTimer::timeout, this->ui->topWidget, &CTopWidget::incrementTimer);
+    connect(m_model, &CTableModel::gameLost,    m_timer, &QTimer::stop);
+    connect(m_model, &CTableModel::gameWon,     m_timer, &QTimer::stop);
+}
+
 void MainWindow::initConnections()
 {
-    connect(m_view, &CTableView::clicked,       m_model, &CTableModel::onTableClicked);
-    connect(m_view, &CTableView::rightClicked,  m_model, &CTableModel::onRightClicked);
+    connect(ui->m_view, &CTableView::clicked,       m_model, &CTableModel::onTableClicked);
+    connect(ui->m_view, &CTableView::rightClicked,  m_model, &CTableModel::onRightClicked);
 
     connect(m_model, &CTableModel::gameLost,    this,   &MainWindow::onGameLost);
     connect(m_model, &CTableModel::gameWon,     this,   &MainWindow::onGameWon);
@@ -93,13 +99,14 @@ void MainWindow::initConnections()
 void MainWindow::newGame()
 {
     m_model->newGame();
-    m_view->reset();
-    m_view->setEnabled(true);
+    ui->m_view->reset();
+    ui->m_view->setEnabled(true);
+    m_timer->start();
 }
 
 void MainWindow::onGameLost()
 {
-    m_view->setDisabled(true);
+    ui->m_view->setDisabled(true);
     statusBar()->showMessage(tr("Unfortunately, you died."), 5000);
 }
 
@@ -117,6 +124,6 @@ void MainWindow::showAboutBox()
 
 void MainWindow::updateView()
 {
-    m_view->resizeColumnsToContents();
-    m_view->resizeRowsToContents();
+    ui->m_view->resizeColumnsToContents();
+    ui->m_view->resizeRowsToContents();
 }

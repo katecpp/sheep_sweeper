@@ -31,10 +31,11 @@ private:
     void initMenubar();
     void initConnections();
     void initStatusBar();
+    void initTimer();
 
     Ui::MainWindow*     ui;
     CTableModel*        m_model;
-    CTableView*         m_view;
+    QTimer*             m_timer;
 };
 
 #endif // MAINWINDOW_H

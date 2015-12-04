@@ -3,8 +3,11 @@
 #include <QSize>
 #include <QDebug>
 
-CTableModel::CTableModel(QObject *parent)
+CTableModel::CTableModel(int32_t xSize, int32_t ySize, int32_t sheep, QObject *parent)
     : QAbstractTableModel(parent),
+      m_xSize(xSize),
+      m_ySize(ySize),
+      m_sheep(sheep),
       m_model(nullptr)
 {
     newGame();
@@ -14,12 +17,12 @@ CTableModel::CTableModel(QObject *parent)
 int CTableModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return m_model->size();
+    return m_model->xSize();
 }
 int CTableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return m_model->size();
+    return m_model->xSize();
 }
 
 QVariant CTableModel::data(const QModelIndex &index, int role) const
@@ -49,7 +52,7 @@ void CTableModel::newGame()
         m_model = nullptr;
     }
 
-    m_model = new CModel(10,10);
+    m_model = new CModel(m_xSize, m_sheep);
     m_model->populate();
 }
 

@@ -5,14 +5,14 @@
 
 using std::rand;
 
-CModel::CModel(int32_t size, int32_t sheepNumber)
-    : m_size(size)
+CModel::CModel(int32_t xSize, int32_t sheepNumber)
+    : m_xSize(xSize)
     , m_totalSheepNr(sheepNumber)
     , m_lurkingSheepNr(sheepNumber)
     , m_discoveredFieldsNr(0)
     , m_data()
 {
-    uint64_t fieldsNumber = m_size * m_size;
+    uint64_t fieldsNumber = m_xSize * m_xSize;
     m_data.reserve(fieldsNumber);
     m_data.insert(m_data.begin(), fieldsNumber, SField());
 
@@ -53,9 +53,9 @@ void CModel::populateSheepCrew()
 
 void CModel::populateNeighbourhood()
 {
-    for (int32_t x = 0; x < m_size; ++x)
+    for (int32_t x = 0; x < m_xSize; ++x)
     {
-        for (int32_t y = 0; y < m_size; ++y)
+        for (int32_t y = 0; y < m_xSize; ++y)
         {
             uint8_t sheepValue =
                     getSheepValue   (x-1,   y-1) // up
@@ -75,7 +75,7 @@ void CModel::populateNeighbourhood()
 
 uint8_t CModel::getSheepValue(int32_t x, int32_t y) const
 {
-    if (x >= 0 && x < m_size && y >= 0 && y < m_size)
+    if (x >= 0 && x < m_xSize && y >= 0 && y < m_xSize)
     {
         return field(x,y).sheep;
     }
@@ -87,7 +87,7 @@ uint8_t CModel::getSheepValue(int32_t x, int32_t y) const
 
 uint8_t CModel::getDiscoverValue(int32_t x, int32_t y) const
 {
-    if (x >= 0 && x < m_size && y >= 0 && y < m_size)
+    if (x >= 0 && x < m_xSize && y >= 0 && y < m_xSize)
     {
         return field(x,y).discovered;
     }
@@ -120,19 +120,19 @@ void CModel::disarm(int32_t x, int32_t y)
 
 const SField& CModel::field(int32_t x, int32_t y) const
 {
-    return m_data[y * m_size + x];
+    return m_data[y * m_xSize + x];
 }
 
 SField& CModel::field(int32_t x, int32_t y)
 {
-    return m_data[y * m_size + x];
+    return m_data[y * m_xSize + x];
 }
 
 void CModel::printDebug() const
 {
     for (uint64_t i = 0; i < count(); ++i)
     {
-        if (i > 0 && i % m_size == 0)
+        if (i > 0 && i % m_xSize == 0)
         {
             qDebug() << "\n";
         }
