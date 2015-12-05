@@ -1,7 +1,6 @@
 #ifndef CTABLEVIEW_H
 #define CTABLEVIEW_H
 
-#include <QObject>
 #include <QTableView>
 #include <QMouseEvent>
 
@@ -11,6 +10,7 @@ class CTableView : public QTableView
 public:
     CTableView(QWidget *parent = 0);
     virtual void mouseReleaseEvent(QMouseEvent* event);
+    virtual QSize sizeHint() const;
 
 signals:
     void rightClicked(const QModelIndex& index);
