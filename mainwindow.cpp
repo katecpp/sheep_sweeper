@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <CTopWidget.h>
 #include <QTimer>
+#include <Constants.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,15 +17,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     initTable();
-    initConnections();
     initMenubar();
     initStatusBar();
     initTimer();
+    initConnections();
 
-    setWindowIcon(QIcon(QPixmap(":/images/images/big_sheep.png")));
-    setWindowTitle(tr(APP_NAME()));
-    //resize(340, 360);
-    // FIXME: set proper window size
+    setWindowIcon(QIcon(QPixmap(BIG_SHEEP_PATH)));
+    setWindowTitle(APP);
 }
 
 MainWindow::~MainWindow()
@@ -34,8 +33,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::initTable()
 {
-    m_model = new CTableModel(10, 10, 10, this);
+    m_model = new CTableModel(10, 20, 10, this);
 
+    CFieldDelegate *delegate = new CFieldDelegate(this);
+    ui->m_view->setItemDelegate(delegate);
     ui->m_view->setShowGrid(false);
     ui->m_view->horizontalHeader()->hide();
     ui->m_view->verticalHeader()->hide();
@@ -43,10 +44,7 @@ void MainWindow::initTable()
     ui->m_view->verticalHeader()->setMinimumSectionSize(1);
     ui->m_view->setModel(m_model);
     ui->m_view->setSelectionMode(QAbstractItemView::NoSelection);
-    //ui->m_view->resize(250,250);
-
-    CFieldDelegate *delegate = new CFieldDelegate(this);
-    ui->m_view->setItemDelegate(delegate);
+    ui->m_view->setFixedSize(ui->m_view->sizeHint());
 }
 
 void MainWindow::initMenubar()
@@ -73,14 +71,13 @@ void MainWindow::initMenubar()
 
 void  MainWindow::initStatusBar()
 {
-    statusBar()->showMessage(tr("Sheep are looking at you..."), 5000);
+    statusBar()->showMessage(tr("Sheep is looking at you..."), 5000);
 }
 
 void MainWindow::initTimer()
 {
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
-    connect(m_timer, &QTimer::timeout, this->ui->topWidget, &CTopWidget::incrementTimer);
     connect(m_model, &CTableModel::gameLost,    m_timer, &QTimer::stop);
     connect(m_model, &CTableModel::gameWon,     m_timer, &QTimer::stop);
 }
@@ -93,7 +90,11 @@ void MainWindow::initConnections()
     connect(m_model, &CTableModel::gameLost,    this,   &MainWindow::onGameLost);
     connect(m_model, &CTableModel::gameWon,     this,   &MainWindow::onGameWon);
 
+    connect(m_timer, &QTimer::timeout, this->ui->topWidget, &CTopWidget::incrementTimer);
+    connect(m_model, &CTableModel::sheepRemainedForDisplay, ui->topWidget, &CTopWidget::setSheepRemainingForDisplay);
     //TODO: pressed event
+
+    connect(ui->topWidget, &CTopWidget::buttonClicked, this, &MainWindow::newGame);
 }
 
 void MainWindow::newGame()
@@ -102,6 +103,7 @@ void MainWindow::newGame()
     ui->m_view->reset();
     ui->m_view->setEnabled(true);
     m_timer->start();
+    ui->topWidget->resetTimer();
 }
 
 void MainWindow::onGameLost()
@@ -118,8 +120,7 @@ void MainWindow::onGameWon()
 void MainWindow::showAboutBox()
 {
     //TODO: credit for icon
-    QMessageBox::about(this, tr(APP_NAME()),
-        tr("Try to avoid the furious sheep."));
+    QMessageBox::about(this, APP, tr("Try to avoid the furious sheep."));
 }
 
 void MainWindow::updateView()

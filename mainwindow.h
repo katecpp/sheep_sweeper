@@ -25,8 +25,6 @@ public slots:
     void onGameWon();
 
 private:
-    static const char* APP_NAME() { return "Sheep sweeper 0.1"; }
-
     void initTable();
     void initMenubar();
     void initConnections();
