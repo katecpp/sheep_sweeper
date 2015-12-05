@@ -3,10 +3,11 @@
 #include <QStylePainter>
 #include <QApplication>
 #include <SField.h>
+#include <Constants.h>
 
 CFieldDelegate::CFieldDelegate(QObject *parent)
     : QAbstractItemDelegate(parent),
-      m_fieldSize(24)
+      m_fieldSize(FIELD_SIZE)
 {
 }
 
@@ -25,7 +26,7 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         if (field.sheep != 0)
         {
-            buttonStyle.icon = QIcon(QPixmap(":/images/images/small_sheep.png"));
+            buttonStyle.icon = QIcon(QPixmap(SMALL_SHEEP_PATH));
 
         }
         else if (field.neighbours != 0)
@@ -39,11 +40,11 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         if (field.disarmed == 1)
         {
-            buttonStyle.icon = QIcon(QPixmap(":/images/images/disarmed.png"));
+            buttonStyle.icon = QIcon(QPixmap(DISARMED_PATH));
         }
         else if (field.disarmed == 2)
         {
-            buttonStyle.icon = QIcon(QPixmap(":/images/images/question.png"));
+            buttonStyle.icon = QIcon(QPixmap(QUESTION_PATH));
         }
     }
 

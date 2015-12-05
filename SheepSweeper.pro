@@ -14,24 +14,25 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    CModel.cpp \
-    CFieldDelegate.cpp \
-    CTableModel.cpp \
-    CTableView.cpp \
-    CTopWidget.cpp
+        CModel.cpp \
+        CFieldDelegate.cpp \
+        CTableModel.cpp \
+        CTableView.cpp \
+        CTopWidget.cpp
 
 HEADERS  += mainwindow.h \
-    CModel.h \
-    CFieldDelegate.h \
-    SField.h \
-    CTableModel.h \
-    CTableView.h \
-    CTopWidget.h
+        CModel.h \
+        CFieldDelegate.h \
+        SField.h \
+        CTableModel.h \
+        CTableView.h \
+        CTopWidget.h \
+    	Constants.h
 
 FORMS    += mainwindow.ui \
-    CTopWidget.ui
+        CTopWidget.ui
 
 CONFIG   += c++14
 
 RESOURCES += \
-    images.qrc
+        images.qrc
