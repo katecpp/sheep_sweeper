@@ -7,11 +7,20 @@ CTableModel::CTableModel(int32_t xSize, int32_t ySize, int32_t sheep, QObject *p
     : QAbstractTableModel(parent),
       m_xSize(xSize),
       m_ySize(ySize),
-      m_sheep(sheep),
+      m_sheepTotal(sheep),
       m_model(nullptr)
 {
     newGame();
     //TODO: delay populating until user clicks first field
+}
+
+CTableModel::~CTableModel()
+{
+    if (m_model != nullptr)
+    {
+        delete m_model;
+        m_model = nullptr;
+    }
 }
 
 int CTableModel::rowCount(const QModelIndex &parent) const
@@ -52,7 +61,7 @@ void CTableModel::newGame()
         m_model = nullptr;
     }
 
-    m_model = new CModel(m_xSize, m_sheep);
+    m_model = new CModel(m_xSize, m_sheepTotal);
     m_model->populate();
 }
 
