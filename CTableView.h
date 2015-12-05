@@ -10,7 +10,6 @@ class CTableView : public QTableView
 public:
     CTableView(QWidget *parent = 0);
     virtual void mouseReleaseEvent(QMouseEvent* event);
-    virtual QSize sizeHint() const;
 
 signals:
     void rightClicked(const QModelIndex& index);

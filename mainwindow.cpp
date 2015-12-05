@@ -33,7 +33,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initTable()
 {
-    m_model = new CTableModel(10, 20, 10, this);
+    m_model = new CTableModel(15, 20, 10, this);
 
     CFieldDelegate *delegate = new CFieldDelegate(this);
     ui->m_view->setItemDelegate(delegate);
@@ -44,7 +44,6 @@ void MainWindow::initTable()
     ui->m_view->verticalHeader()->setMinimumSectionSize(1);
     ui->m_view->setModel(m_model);
     ui->m_view->setSelectionMode(QAbstractItemView::NoSelection);
-    ui->m_view->setFixedSize(ui->m_view->sizeHint());
 }
 
 void MainWindow::initMenubar()
@@ -53,6 +52,10 @@ void MainWindow::initMenubar()
 
     QAction *newGameAction = fileMenu->addAction(tr("&New game"));
     newGameAction->setShortcut(QKeySequence::New);
+
+    QAction *difficultyAction = fileMenu->addAction(tr("&Difficulty"));
+    difficultyAction->setShortcut(QKeySequence::Preferences);
+    //TODO: set another shortkut
 
     QAction *quitAction = fileMenu->addAction(tr("E&xit"));
     quitAction->setShortcut(QKeySequence::Quit);
@@ -104,6 +107,7 @@ void MainWindow::newGame()
     ui->m_view->setEnabled(true);
     m_timer->start();
     ui->topWidget->resetTimer();
+    statusBar()->showMessage(tr("Good luck!"), 5000);
 }
 
 void MainWindow::onGameLost()
@@ -117,6 +121,11 @@ void MainWindow::onGameWon()
     statusBar()->showMessage(tr("You won!"), 5000);
 }
 
+void MainWindow::showPreferences()
+{
+    qDebug() << "Preferences";
+}
+
 void MainWindow::showAboutBox()
 {
     //TODO: credit for icon
@@ -127,4 +136,8 @@ void MainWindow::updateView()
 {
     ui->m_view->resizeColumnsToContents();
     ui->m_view->resizeRowsToContents();
+
+    int32_t h = ui->m_view->rowHeight(1) * m_model->rowCount() + 2;
+    int32_t w = ui->m_view->columnWidth(1) * m_model->columnCount() + 2;
+    ui->m_view->setFixedSize(w,h);
 }

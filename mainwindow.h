@@ -20,6 +20,7 @@ public:
 public slots:
     void newGame();
     void showAboutBox();
+    void showPreferences();
     void updateView();
     void onGameLost();
     void onGameWon();
