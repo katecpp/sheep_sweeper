@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowIcon(QIcon(QPixmap(BIG_SHEEP_PATH)));
     setWindowTitle(APP);
+
+    newGame();
 }
 
 MainWindow::~MainWindow()
@@ -94,7 +96,7 @@ void MainWindow::initConnections()
     connect(m_model, &CTableModel::gameWon,     this,   &MainWindow::onGameWon);
 
     connect(m_timer, &QTimer::timeout, this->ui->topWidget, &CTopWidget::incrementTimer);
-    connect(m_model, &CTableModel::sheepRemainedForDisplay, ui->topWidget, &CTopWidget::setSheepRemainingForDisplay);
+    connect(m_model, &CTableModel::sheepRemainedDisplay, ui->topWidget, &CTopWidget::setSheepRemainedDisplay);
     //TODO: pressed event
 
     connect(ui->topWidget, &CTopWidget::buttonClicked, this, &MainWindow::newGame);

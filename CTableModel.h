@@ -17,7 +17,7 @@ public:
 signals:
     void gameWon();
     void gameLost();
-    void sheepRemainedForDisplay(int32_t sheepCount);
+    void sheepRemainedDisplay(int32_t sheepCount);
 
 public slots:
     void newGame();
@@ -29,6 +29,7 @@ private:
     int32_t m_xSize;
     int32_t m_ySize;
     int32_t m_sheepTotal;
+    int32_t m_sheepDisplay;
     CModel* m_model;
 };
 

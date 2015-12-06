@@ -8,6 +8,7 @@ CTableModel::CTableModel(int32_t xSize, int32_t ySize, int32_t sheep, QObject *p
       m_xSize(xSize),
       m_ySize(ySize),
       m_sheepTotal(sheep),
+      m_sheepDisplay(sheep),
       m_model(nullptr)
 {
     newGame();
@@ -63,6 +64,9 @@ void CTableModel::newGame()
 
     m_model = new CModel(m_xSize, m_sheepTotal);
     m_model->populate();
+
+    m_sheepDisplay = m_sheepTotal;
+    emit sheepRemainedDisplay(m_sheepTotal);
 }
 
 void CTableModel::onTableClicked(const QModelIndex &index)
@@ -116,11 +120,23 @@ void CTableModel::onRightClicked(const QModelIndex &index)
 {
     int32_t x = index.row();
     int32_t y = index.column();
-    qDebug() << "Right clicked: " << x << "," << y;
+
+    bool crtDisarmed = (m_model->field(x, y).disarmed > 0);
 
     if (m_model->field(x, y).discovered == 0)
     {
         m_model->disarm(x, y);
+
+        if (crtDisarmed == false)
+        {
+            m_sheepDisplay--;
+        }
+        else if ((crtDisarmed == true) && (m_model->field(x, y).disarmed == 0))
+        {
+            m_sheepDisplay++;
+        }
+
+        emit sheepRemainedDisplay(m_sheepDisplay);
         emit dataChanged(index, index);
     }
 }

@@ -1,15 +1,19 @@
 #include "CTopWidget.h"
 #include "ui_CTopWidget.h"
-
+#include <Constants.h>
+#include <QPixmap>
+#include <QIcon>
 CTopWidget::CTopWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CTopWidget),
     m_time(0)
 {
     ui->setupUi(this);
+    init();
     //TODO: setDigitCount
 
-    QIcon buttonIcon(QPixmap(":/images/images/small_sheep.png"));
+    QPixmap smallSheep(SMALL_SHEEP_PATH);
+    QIcon buttonIcon(smallSheep);
     ui->pushButton->setIcon(buttonIcon);
     //ui->pushButton->setIconSize(buttonIcon.size());
 }
@@ -17,6 +21,11 @@ CTopWidget::CTopWidget(QWidget *parent) :
 CTopWidget::~CTopWidget()
 {
     delete ui;
+}
+
+QSize CTopWidget::sizeHint() const
+{
+    return QSize(50, 70);
 }
 
 void CTopWidget::incrementTimer()
@@ -27,5 +36,16 @@ void CTopWidget::incrementTimer()
 
 void CTopWidget::resetTimer()
 {
+    m_time = 0;
+    ui->lcdTime->display(m_time);
+}
 
+void CTopWidget::setSheepRemainedDisplay(int32_t sheepRemained)
+{
+    ui->lcdSheep->display(sheepRemained);
+}
+
+void CTopWidget::init()
+{
+    connect(ui->pushButton, &QPushButton::clicked, this, &CTopWidget::buttonClicked);
 }
