@@ -7,6 +7,7 @@
 #include <CTopWidget.h>
 #include <QTimer>
 #include <Constants.h>
+#include <CSettingsDialog.h>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -55,8 +56,8 @@ void MainWindow::initMenubar()
     QAction *newGameAction = fileMenu->addAction(tr("&New game"));
     newGameAction->setShortcut(QKeySequence::New);
 
-    QAction *difficultyAction = fileMenu->addAction(tr("&Difficulty"));
-    difficultyAction->setShortcut(QKeySequence::Preferences);
+    QAction *preferencesAction = fileMenu->addAction(tr("&Preferences"));
+    preferencesAction->setShortcut(QKeySequence::Preferences);
     //TODO: set another shortkut
 
     QAction *quitAction = fileMenu->addAction(tr("E&xit"));
@@ -70,6 +71,7 @@ void MainWindow::initMenubar()
     menuBar()->addMenu(helpMenu);
 
     connect(newGameAction, SIGNAL(triggered()), this, SLOT(newGame()));
+    connect(preferencesAction, SIGNAL(triggered(bool)), this, SLOT(showPreferences()));
     connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(showAboutBox()));
 }
@@ -126,6 +128,13 @@ void MainWindow::onGameWon()
 void MainWindow::showPreferences()
 {
     qDebug() << "Preferences";
+
+    CSettingsDialog settings(this);
+
+    if (settings.exec() == QDialog::Accepted)
+    {
+        qDebug() << "Settings saved!";
+    }
 }
 
 void MainWindow::showAboutBox()

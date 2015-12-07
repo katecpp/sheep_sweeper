@@ -13,6 +13,7 @@ CTableModel::CTableModel(int32_t xSize, int32_t ySize, int32_t sheep, QObject *p
 {
     newGame();
     //TODO: delay populating until user clicks first field
+    //BUG: on start the new game is called two times
 }
 
 CTableModel::~CTableModel()

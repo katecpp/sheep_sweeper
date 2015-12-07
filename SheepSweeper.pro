@@ -18,7 +18,8 @@ SOURCES += main.cpp\
         CFieldDelegate.cpp \
         CTableModel.cpp \
         CTableView.cpp \
-        CTopWidget.cpp
+        CTopWidget.cpp \
+    CSettingsDialog.cpp
 
 HEADERS  += mainwindow.h \
         CModel.h \
@@ -27,10 +28,12 @@ HEADERS  += mainwindow.h \
         CTableModel.h \
         CTableView.h \
         CTopWidget.h \
-    	Constants.h
+    	Constants.h \
+    CSettingsDialog.h
 
 FORMS    += mainwindow.ui \
-        CTopWidget.ui
+        CTopWidget.ui \
+    CSettingsDialog.ui
 
 CONFIG   += c++14
 
