@@ -5,16 +5,17 @@
 
 using std::rand;
 
-CModel::CModel(int32_t xSize, int32_t sheepNumber)
-    : m_xSize(xSize)
-    , m_totalSheepNr(sheepNumber)
-    , m_lurkingSheepNr(sheepNumber)
-    , m_discoveredFieldsNr(0)
-    , m_data()
+CModel::CModel(int32_t width, int32_t height, int32_t sheepNumber)
+    : m_width(width),
+      m_height(height),
+      m_totalSheepNr(sheepNumber),
+      m_lurkingSheepNr(sheepNumber),
+      m_discoveredFieldsNr(0),
+      m_data()
 {
-    uint64_t fieldsNumber = m_xSize * m_xSize;
-    m_data.reserve(fieldsNumber);
-    m_data.insert(m_data.begin(), fieldsNumber, SField());
+    int64_t fieldsNr = size();
+    m_data.reserve(fieldsNr);
+    m_data.insert(m_data.begin(), fieldsNr, SField());
 
     srand(std::time(0));
 }
@@ -22,7 +23,7 @@ CModel::CModel(int32_t xSize, int32_t sheepNumber)
 //BUG: Once returned false positive
 bool CModel::checkIfWon() const
 {
-    return (count() - m_discoveredFieldsNr) == m_totalSheepNr;
+    return (size() - m_discoveredFieldsNr) == m_totalSheepNr;
 }
 
 void CModel::populate()
@@ -33,12 +34,12 @@ void CModel::populate()
 
 void CModel::populateSheepCrew()
 {
-    Q_ASSERT(m_totalSheepNr <= count());
+    Q_ASSERT(m_totalSheepNr <= size());
     int64_t sheepMade = 0;
 
     while (sheepMade < m_totalSheepNr)
     {
-        uint64_t fieldId = rand() % count();
+        uint64_t fieldId = rand() % size();
         Q_ASSERT(fieldId < m_data.size());
 
         if (0 == m_data[fieldId].sheep)
@@ -47,15 +48,13 @@ void CModel::populateSheepCrew()
             sheepMade++;
         }
     }
-
-    qDebug() << "Sheep crew is ready...";
 }
 
 void CModel::populateNeighbourhood()
 {
-    for (int32_t x = 0; x < m_xSize; ++x)
+    for (int32_t x = 0; x < m_width; ++x)
     {
-        for (int32_t y = 0; y < m_xSize; ++y)
+        for (int32_t y = 0; y < m_height; ++y)
         {
             uint8_t sheepValue =
                     getSheepValue   (x-1,   y-1) // up
@@ -75,7 +74,7 @@ void CModel::populateNeighbourhood()
 
 uint8_t CModel::getSheepValue(int32_t x, int32_t y) const
 {
-    if (x >= 0 && x < m_xSize && y >= 0 && y < m_xSize)
+    if (x >= 0 && x < m_width && y >= 0 && y < m_height)
     {
         return field(x,y).sheep;
     }
@@ -87,7 +86,7 @@ uint8_t CModel::getSheepValue(int32_t x, int32_t y) const
 
 uint8_t CModel::getDiscoverValue(int32_t x, int32_t y) const
 {
-    if (x >= 0 && x < m_xSize && y >= 0 && y < m_xSize)
+    if (x >= 0 && x < m_width && y >= 0 && y < m_height)
     {
         return field(x,y).discovered;
     }
@@ -120,25 +119,11 @@ void CModel::disarm(int32_t x, int32_t y)
 
 const SField& CModel::field(int32_t x, int32_t y) const
 {
-    return m_data[y * m_xSize + x];
+    return m_data[y * m_width + x];
 }
 
 SField& CModel::field(int32_t x, int32_t y)
 {
-    return m_data[y * m_xSize + x];
-}
-
-void CModel::printDebug() const
-{
-    for (uint64_t i = 0; i < count(); ++i)
-    {
-        if (i > 0 && i % m_xSize == 0)
-        {
-            qDebug() << "\n";
-        }
-
-        QString f = "[" + (m_data[i].sheep ? "x" : QString::number(m_data[i].neighbours)) + "]";
-        qDebug() << f;
-    }
+    return m_data[y * m_width + x];
 }
 

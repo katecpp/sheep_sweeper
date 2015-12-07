@@ -20,7 +20,7 @@ private:
     void getStyleForField(const SField& field, const QStyleOptionViewItem &option,
                           QStyleOptionButton& buttonStyle) const;
 
-    int m_fieldSize;
+    int32_t m_fieldSize;
 };
 
 #endif // CFIELDDELEGATE_H

@@ -26,8 +26,8 @@ public slots:
 private:
     void discover(const QModelIndex &index);
 
-    int32_t m_xSize;
-    int32_t m_ySize;
+    int32_t m_width;
+    int32_t m_height;
     int32_t m_sheepTotal;
     int32_t m_sheepDisplay;
     CModel* m_model;

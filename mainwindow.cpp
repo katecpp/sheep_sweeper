@@ -36,7 +36,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initTable()
 {
-    m_model = new CTableModel(15, 20, 10, this);
+    m_model = new CTableModel(15, 20, 50, this);
 
     CFieldDelegate *delegate = new CFieldDelegate(this);
     ui->m_view->setItemDelegate(delegate);
@@ -128,13 +128,7 @@ void MainWindow::onGameWon()
 void MainWindow::showPreferences()
 {
     qDebug() << "Preferences";
-
-    CSettingsDialog settings(this);
-
-    if (settings.exec() == QDialog::Accepted)
-    {
-        qDebug() << "Settings saved!";
-    }
+    CSettingsDialog::getPreferences(this);
 }
 
 void MainWindow::showAboutBox()

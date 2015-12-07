@@ -5,8 +5,8 @@
 
 CTableModel::CTableModel(int32_t xSize, int32_t ySize, int32_t sheep, QObject *parent)
     : QAbstractTableModel(parent),
-      m_xSize(xSize),
-      m_ySize(ySize),
+      m_width(xSize),
+      m_height(ySize),
       m_sheepTotal(sheep),
       m_sheepDisplay(sheep),
       m_model(nullptr)
@@ -28,12 +28,12 @@ CTableModel::~CTableModel()
 int CTableModel::rowCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return m_model->xSize();
+    return m_model->width();
 }
 int CTableModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return m_model->xSize();
+    return m_model->height();
 }
 
 QVariant CTableModel::data(const QModelIndex &index, int role) const
@@ -63,7 +63,7 @@ void CTableModel::newGame()
         m_model = nullptr;
     }
 
-    m_model = new CModel(m_xSize, m_sheepTotal);
+    m_model = new CModel(m_width, m_height, m_sheepTotal);
     m_model->populate();
 
     m_sheepDisplay = m_sheepTotal;

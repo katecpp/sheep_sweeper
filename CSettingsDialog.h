@@ -15,6 +15,8 @@ public:
     explicit CSettingsDialog(QWidget *parent = 0);
     ~CSettingsDialog();
 
+    static void getPreferences(QWidget* parent = 0);
+
 private:
     Ui::CSettingsDialog *ui;
 };
