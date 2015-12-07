@@ -3,6 +3,7 @@
 
 #include <QAbstractItemDelegate>
 #include <QModelIndex>
+#include <SField.h>
 
 class CFieldDelegate : public QAbstractItemDelegate
 {
@@ -16,6 +17,9 @@ public:
                    const QModelIndex &index ) const Q_DECL_OVERRIDE;
 
 private:
+    void getStyleForField(const SField& field, const QStyleOptionViewItem &option,
+                          QStyleOptionButton& buttonStyle) const;
+
     int m_fieldSize;
 };
 

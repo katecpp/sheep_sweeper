@@ -1,9 +1,7 @@
 #include <CFieldDelegate.h>
-#include <QPainter>
+#include <Constants.h>
 #include <QStylePainter>
 #include <QApplication>
-#include <SField.h>
-#include <Constants.h>
 
 CFieldDelegate::CFieldDelegate(QObject *parent)
     : QAbstractItemDelegate(parent),
@@ -17,17 +15,31 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     SField field = index.model()->data(index, Qt::UserRole).value<SField>();
 
     QStyleOptionButton buttonStyle;
-    buttonStyle.rect = option.rect;
-    buttonStyle.iconSize = QSize(16, 16);
+    getStyleForField(field, option, buttonStyle);
+
+    QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonStyle, painter,
+                                       qobject_cast<QWidget *>(this->parent()) );
+}
+
+QSize CFieldDelegate::sizeHint(const QStyleOptionViewItem & /* option */,
+                              const QModelIndex & /* index */) const
+{
+    return QSize(m_fieldSize, m_fieldSize);
+}
+
+void CFieldDelegate::getStyleForField(const SField& field, const QStyleOptionViewItem &option, QStyleOptionButton& buttonStyle) const
+{
+    buttonStyle.rect        = option.rect;
+    buttonStyle.iconSize    = QSize(ICON_SIZE, ICON_SIZE);
+    buttonStyle.state      |= QStyle::State_Enabled | option.state;
 
     if (field.discovered)
     {
-        buttonStyle.state |= QStyle::State_Sunken | QStyle::State_Enabled | option.state;
+        buttonStyle.state |= QStyle::State_Sunken;
 
         if (field.sheep != 0)
         {
             buttonStyle.icon = QIcon(QPixmap(SMALL_SHEEP_PATH));
-
         }
         else if (field.neighbours != 0)
         {
@@ -36,7 +48,7 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     }
     else
     {
-        buttonStyle.state |= QStyle::State_Raised | QStyle::State_Enabled | option.state;
+        buttonStyle.state |= QStyle::State_Raised;
 
         if (field.disarmed == 1)
         {
@@ -47,13 +59,4 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
             buttonStyle.icon = QIcon(QPixmap(QUESTION_PATH));
         }
     }
-
-    QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonStyle, painter,
-                                       qobject_cast<QWidget *>(this->parent()) );
-}
-
-QSize CFieldDelegate::sizeHint(const QStyleOptionViewItem & /* option */,
-                              const QModelIndex & /* index */) const
-{
-    return QSize(m_fieldSize, m_fieldSize);
 }
