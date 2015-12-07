@@ -17,6 +17,9 @@ public:
 
     static void getPreferences(QWidget* parent = 0);
 
+public slots:
+    void updateRange();
+
 private:
     Ui::CSettingsDialog *ui;
 };

@@ -31,6 +31,8 @@ private:
     void initConnections();
     void initStatusBar();
     void initTimer();
+    void loadSettings();
+    void saveSettings();
 
     Ui::MainWindow*     ui;
     CTableModel*        m_model;

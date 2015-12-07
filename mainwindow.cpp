@@ -78,7 +78,7 @@ void MainWindow::initMenubar()
 
 void  MainWindow::initStatusBar()
 {
-    statusBar()->showMessage(tr("Sheep is looking at you..."), 5000);
+    statusBar()->showMessage(tr("Sheep is looking at you..."), MSG_TIMEOUT);
 }
 
 void MainWindow::initTimer()
@@ -111,18 +111,18 @@ void MainWindow::newGame()
     ui->m_view->setEnabled(true);
     m_timer->start();
     ui->topWidget->resetTimer();
-    statusBar()->showMessage(tr("Good luck!"), 5000);
+    statusBar()->showMessage(tr("Good luck!"), MSG_TIMEOUT);
 }
 
 void MainWindow::onGameLost()
 {
     ui->m_view->setDisabled(true);
-    statusBar()->showMessage(tr("Unfortunately, you died."), 5000);
+    statusBar()->showMessage(tr("Unfortunately, you died."), MSG_TIMEOUT);
 }
 
 void MainWindow::onGameWon()
 {
-    statusBar()->showMessage(tr("You won!"), 5000);
+    statusBar()->showMessage(tr("You won!"), MSG_TIMEOUT);
 }
 
 void MainWindow::showPreferences()
@@ -146,3 +146,14 @@ void MainWindow::updateView()
     int32_t w = ui->m_view->columnWidth(1) * m_model->columnCount() + 2;
     ui->m_view->setFixedSize(w,h);
 }
+
+void MainWindow::loadSettings()
+{
+    qDebug() << "Load settings";
+}
+
+void MainWindow::saveSettings()
+{
+    qDebug() << "Save settings";
+}
+
