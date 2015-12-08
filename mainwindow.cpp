@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowIcon(QIcon(QPixmap(BIG_SHEEP_PATH)));
     setWindowTitle(APP);
 
-    newGame();
+    m_model->newGame();
 }
 
 MainWindow::~MainWindow()
@@ -36,7 +36,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::initTable()
 {
-    m_model = new CTableModel(15, 20, 50, this);
+    m_model = new CTableModel(10, 10, 98, this);
 
     CFieldDelegate *delegate = new CFieldDelegate(this);
     ui->m_view->setItemDelegate(delegate);
@@ -85,6 +85,7 @@ void MainWindow::initTimer()
 {
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
+    connect(m_model, SIGNAL(gameStarted()), m_timer, SLOT(start())); // TODO: to Qt5
     connect(m_model, &CTableModel::gameLost,    m_timer, &QTimer::stop);
     connect(m_model, &CTableModel::gameWon,     m_timer, &QTimer::stop);
 }
@@ -106,10 +107,14 @@ void MainWindow::initConnections()
 
 void MainWindow::newGame()
 {
+    if (m_timer->isActive())
+    {
+        m_timer->stop();
+    }
+
     m_model->newGame();
     ui->m_view->reset();
     ui->m_view->setEnabled(true);
-    m_timer->start();
     ui->topWidget->resetTimer();
     statusBar()->showMessage(tr("Good luck!"), MSG_TIMEOUT);
 }

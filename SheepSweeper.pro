@@ -28,7 +28,7 @@ HEADERS  += mainwindow.h \
         CTableModel.h \
         CTableView.h \
         CTopWidget.h \
-    	Constants.h \
+        Constants.h \
         CSettingsDialog.h
 
 FORMS    += mainwindow.ui \

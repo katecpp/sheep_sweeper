@@ -15,15 +15,17 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
     int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
 signals:
+    void gameStarted();
     void gameWon();
     void gameLost();
     void sheepRemainedDisplay(int32_t sheepCount);
-
 public slots:
     void newGame();
     void onTableClicked(const QModelIndex &index);
     void onRightClicked(const QModelIndex &index);
 private:
+    void init(const QModelIndex &index);
+    void clearModel();
     void discover(const QModelIndex &index);
 
     int32_t m_width;
@@ -31,6 +33,7 @@ private:
     int32_t m_sheepTotal;
     int32_t m_sheepDisplay;
     CModel* m_model;
+    bool    m_initialized;
 };
 
 #endif // CTABLEMODEL_H

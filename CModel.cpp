@@ -26,23 +26,24 @@ bool CModel::checkIfWon() const
     return (size() - m_discoveredFieldsNr) == m_totalSheepNr;
 }
 
-void CModel::populate()
+void CModel::populate(int32_t x, int32_t y)
 {
-    populateSheepCrew();
+    populateSheepCrew(x, y);
     populateNeighbourhood();
 }
 
-void CModel::populateSheepCrew()
+void CModel::populateSheepCrew(int32_t x, int32_t y)
 {
     Q_ASSERT(m_totalSheepNr <= size());
-    int64_t sheepMade = 0;
+    uint64_t noSheepFieldId = y * m_width + x;
+    int64_t sheepMade       = 0;
 
     while (sheepMade < m_totalSheepNr)
     {
         uint64_t fieldId = rand() % size();
         Q_ASSERT(fieldId < m_data.size());
 
-        if (0 == m_data[fieldId].sheep)
+        if ((0 == m_data[fieldId].sheep) && (fieldId != noSheepFieldId))
         {
             m_data[fieldId].sheep = 1;
             sheepMade++;

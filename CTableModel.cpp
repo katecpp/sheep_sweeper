@@ -9,7 +9,8 @@ CTableModel::CTableModel(int32_t xSize, int32_t ySize, int32_t sheep, QObject *p
       m_height(ySize),
       m_sheepTotal(sheep),
       m_sheepDisplay(sheep),
-      m_model(nullptr)
+      m_model(nullptr),
+      m_initialized(false)
 {
     newGame();
     //TODO: delay populating until user clicks first field
@@ -18,11 +19,15 @@ CTableModel::CTableModel(int32_t xSize, int32_t ySize, int32_t sheep, QObject *p
 
 CTableModel::~CTableModel()
 {
-    if (m_model != nullptr)
-    {
-        delete m_model;
-        m_model = nullptr;
-    }
+    clearModel();
+}
+
+void CTableModel::init(const QModelIndex &index)
+{
+    qDebug() << "CTableModel::init";
+    m_model->populate(index.row(), index.column());
+    m_initialized = true;
+    emit gameStarted();
 }
 
 int CTableModel::rowCount(const QModelIndex &parent) const
@@ -53,19 +58,22 @@ QVariant CTableModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void CTableModel::newGame()
+void CTableModel::clearModel()
 {
-    qDebug() << "New game";
+    m_initialized = false;
 
     if (m_model != nullptr)
     {
         delete m_model;
         m_model = nullptr;
     }
+}
 
+void CTableModel::newGame()
+{
+    qDebug() << "New game";
+    clearModel();
     m_model = new CModel(m_width, m_height, m_sheepTotal);
-    m_model->populate();
-
     m_sheepDisplay = m_sheepTotal;
     emit sheepRemainedDisplay(m_sheepTotal);
 }
@@ -85,8 +93,7 @@ void CTableModel::onTableClicked(const QModelIndex &index)
             qDebug() << "You loose!";
             emit gameLost();
         }
-
-        if (m_model->checkIfWon())
+        else if (m_model->checkIfWon())
         {
             qDebug() << "You win!";
             emit gameWon();
@@ -97,6 +104,12 @@ void CTableModel::onTableClicked(const QModelIndex &index)
 
 void CTableModel::discover(const QModelIndex &index)
 {
+    if (!m_initialized)
+    {
+        qDebug() << "First click!";
+        init(index);
+    }
+
     const int32_t x = index.row();
     const int32_t y = index.column();
 

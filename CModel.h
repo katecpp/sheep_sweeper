@@ -10,26 +10,25 @@ class CModel
 public:
     CModel(int32_t width, int32_t height, int32_t sheepNumber);
 
-    bool        checkIfWon() const;
+    int32_t         width() const { return m_width; }
+    int32_t         height() const { return m_height; }
+    int64_t         size() const { return m_width * m_height; }
 
-    uint8_t     getSheepValue(int32_t x, int32_t y) const;
-    uint8_t     getDiscoverValue(int32_t x, int32_t y) const;
+    void            populate(int32_t x, int32_t y);
 
-    int32_t     width() const { return m_width; }
-    int32_t     height() const { return m_height; }
-    int64_t     size() const { return m_width * m_height; }
+    uint8_t         getSheepValue(int32_t x, int32_t y) const;
+    uint8_t         getDiscoverValue(int32_t x, int32_t y) const;
 
-    void        populate();
+    void            discover(int32_t x, int32_t y);
+    void            disarm(int32_t x, int32_t y);
+    bool            checkIfWon() const;
 
-    void discover(int32_t x, int32_t y);
-    void disarm(int32_t x, int32_t y);
-
-    SField& field(int32_t x, int32_t y);
-    const SField& field(int32_t x, int32_t y) const;
+    SField&         field(int32_t x, int32_t y);
+    const SField&   field(int32_t x, int32_t y) const;
 
 private:
-    void populateSheepCrew();
-    void populateNeighbourhood();
+    void            populateSheepCrew(int32_t x, int32_t y);
+    void            populateNeighbourhood();
 
     int32_t             m_width;
     int32_t             m_height;
