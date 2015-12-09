@@ -17,6 +17,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void closeEvent(QCloseEvent *event);
+
 public slots:
     void newGame();
     void showAboutBox();
@@ -37,6 +39,9 @@ private:
     Ui::MainWindow*     ui;
     CTableModel*        m_model;
     QTimer*             m_timer;
+    int32_t             m_height;
+    int32_t             m_width;
+    int32_t             m_sheep;
 };
 
 #endif // MAINWINDOW_H

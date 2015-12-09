@@ -15,7 +15,7 @@ public:
     explicit CSettingsDialog(QWidget *parent = 0);
     ~CSettingsDialog();
 
-    static void getPreferences(QWidget* parent = 0);
+    static bool getPreferences(int32_t& width, int32_t& height, int32_t& sheep, QWidget* parent = 0);
 
 public slots:
     void updateRange();

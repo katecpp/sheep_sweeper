@@ -12,6 +12,9 @@ CSettingsDialog::CSettingsDialog(QWidget *parent) :
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &CSettingsDialog::reject);
     connect(ui->heightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateRange()));
     connect(ui->widthSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateRange()));
+
+    ui->heightSpinBox->setMinimum(2);
+    ui->widthSpinBox->setMinimum(2);
 }
 
 CSettingsDialog::~CSettingsDialog()
@@ -19,20 +22,30 @@ CSettingsDialog::~CSettingsDialog()
     delete ui;
 }
 
-void CSettingsDialog::getPreferences(QWidget *parent)
+bool CSettingsDialog::getPreferences(int32_t &width, int32_t &height, int32_t &sheep, QWidget *parent)
 {
+    bool retValue = false;
+
     CSettingsDialog dialog(parent);
+
+    dialog.ui->heightSpinBox->setValue(height);
+    dialog.ui->widthSpinBox->setValue(width);
+    dialog.ui->sheepSpinBox->setValue(sheep);
+
     if (dialog.exec() == QDialog::Accepted)
     {
         qDebug() << "Accepted";
-        qDebug() << "Height: " << dialog.ui->heightSpinBox->value();
-        qDebug() << "Width: " << dialog.ui->widthSpinBox->value();
-        qDebug() << "Sheep: " << dialog.ui->sheepSpinBox->value();
+        height  = dialog.ui->heightSpinBox->value();
+        width   = dialog.ui->widthSpinBox->value();
+        sheep   = dialog.ui->sheepSpinBox->value();
+        retValue = true;
     }
     else
     {
         qDebug() << "Rejected";
     }
+
+    return retValue;
 }
 
 void CSettingsDialog::updateRange()

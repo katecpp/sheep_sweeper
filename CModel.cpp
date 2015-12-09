@@ -13,6 +13,17 @@ CModel::CModel(int32_t width, int32_t height, int32_t sheepNumber)
       m_discoveredFieldsNr(0),
       m_data()
 {
+    createBoard();
+}
+
+//BUG: Once returned false positive
+bool CModel::checkIfWon() const
+{
+    return (size() - m_discoveredFieldsNr) == m_totalSheepNr;
+}
+
+void CModel::createBoard()
+{
     int64_t fieldsNr = size();
     m_data.reserve(fieldsNr);
     m_data.insert(m_data.begin(), fieldsNr, SField());
@@ -20,10 +31,17 @@ CModel::CModel(int32_t width, int32_t height, int32_t sheepNumber)
     srand(std::time(0));
 }
 
-//BUG: Once returned false positive
-bool CModel::checkIfWon() const
+void CModel::reset(int32_t width, int32_t height, int32_t sheepNumber)
 {
-    return (size() - m_discoveredFieldsNr) == m_totalSheepNr;
+    qDebug() << "CModel::reset " << width << ", " << height << ", " << sheepNumber;
+    m_width = width;
+    m_height = height;
+    m_totalSheepNr = sheepNumber;
+    m_lurkingSheepNr = m_totalSheepNr;
+    m_discoveredFieldsNr = 0;
+    m_data.clear();
+
+    createBoard();
 }
 
 void CModel::populate(int32_t x, int32_t y)
@@ -85,7 +103,7 @@ uint8_t CModel::getSheepValue(int32_t x, int32_t y) const
     }
 }
 
-uint8_t CModel::getDiscoverValue(int32_t x, int32_t y) const
+uint8_t CModel::isDiscovered(int32_t x, int32_t y) const
 {
     if (x >= 0 && x < m_width && y >= 0 && y < m_height)
     {

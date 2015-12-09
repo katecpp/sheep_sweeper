@@ -14,10 +14,11 @@ public:
     int32_t         height() const { return m_height; }
     int64_t         size() const { return m_width * m_height; }
 
+    void            reset(int32_t width, int32_t height, int32_t sheepNumber);
     void            populate(int32_t x, int32_t y);
 
     uint8_t         getSheepValue(int32_t x, int32_t y) const;
-    uint8_t         getDiscoverValue(int32_t x, int32_t y) const;
+    uint8_t         isDiscovered(int32_t x, int32_t y) const;
 
     void            discover(int32_t x, int32_t y);
     void            disarm(int32_t x, int32_t y);
@@ -27,6 +28,7 @@ public:
     const SField&   field(int32_t x, int32_t y) const;
 
 private:
+    void            createBoard();
     void            populateSheepCrew(int32_t x, int32_t y);
     void            populateNeighbourhood();
 

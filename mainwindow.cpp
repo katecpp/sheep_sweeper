@@ -3,6 +3,7 @@
 #include <CFieldDelegate.h>
 #include <QMessageBox>
 #include <QHBoxLayout>
+#include <QSettings>
 #include <QDebug>
 #include <CTopWidget.h>
 #include <QTimer>
@@ -13,9 +14,14 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_model(nullptr),
-    m_timer(nullptr)
+    m_timer(nullptr),
+    m_height(DEFAULT_HEIGHT),
+    m_width(DEFAULT_WIDTH),
+    m_sheep(DEFAULT_SHEEP)
 {
     ui->setupUi(this);
+
+    loadSettings();
 
     initTable();
     initMenubar();
@@ -26,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowIcon(QIcon(QPixmap(BIG_SHEEP_PATH)));
     setWindowTitle(APP);
 
-    m_model->newGame();
+    newGame();
 }
 
 MainWindow::~MainWindow()
@@ -34,9 +40,15 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    saveSettings();
+    event->accept();
+}
+
 void MainWindow::initTable()
 {
-    m_model = new CTableModel(10, 10, 98, this);
+    m_model = new CTableModel(m_width, m_height, m_sheep, this);
 
     CFieldDelegate *delegate = new CFieldDelegate(this);
     ui->m_view->setItemDelegate(delegate);
@@ -112,11 +124,13 @@ void MainWindow::newGame()
         m_timer->stop();
     }
 
-    m_model->newGame();
+    m_model->newGame(m_width, m_height, m_sheep);
     ui->m_view->reset();
+    ui->m_view->setModel(m_model);
     ui->m_view->setEnabled(true);
     ui->topWidget->resetTimer();
     statusBar()->showMessage(tr("Good luck!"), MSG_TIMEOUT);
+    updateView();
 }
 
 void MainWindow::onGameLost()
@@ -133,7 +147,10 @@ void MainWindow::onGameWon()
 void MainWindow::showPreferences()
 {
     qDebug() << "Preferences";
-    CSettingsDialog::getPreferences(this);
+    if (CSettingsDialog::getPreferences(m_width, m_height, m_sheep, this))
+    {
+        newGame();
+    }
 }
 
 void MainWindow::showAboutBox()
@@ -149,16 +166,25 @@ void MainWindow::updateView()
 
     int32_t h = ui->m_view->rowHeight(1) * m_model->rowCount() + 2;
     int32_t w = ui->m_view->columnWidth(1) * m_model->columnCount() + 2;
-    ui->m_view->setFixedSize(w,h);
+    ui->m_view->setFixedSize(w, h);
 }
 
 void MainWindow::loadSettings()
 {
-    qDebug() << "Load settings";
+    QSettings settings;
+    m_height = settings.value("height", int32_t(DEFAULT_HEIGHT)).toInt();
+    m_width  = settings.value("width", int32_t(DEFAULT_WIDTH)).toInt();
+    m_sheep  = settings.value("sheep", int32_t(DEFAULT_SHEEP)).toInt();
+
+    qDebug() << "Settings: " << m_height << " " << m_width << " " << m_sheep;
 }
 
 void MainWindow::saveSettings()
 {
     qDebug() << "Save settings";
+    QSettings settings;
+    settings.setValue("height", m_height);
+    settings.setValue("width", m_width);
+    settings.setValue("sheep", m_sheep);
 }
 

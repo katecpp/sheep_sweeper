@@ -8,7 +8,7 @@ class CTableModel : public QAbstractTableModel
 {
     Q_OBJECT
 public:
-    explicit CTableModel(int32_t xSize = 10, int32_t ySize = 10, int32_t sheep = 10, QObject *parent = 0);
+    explicit CTableModel(int32_t width = 10, int32_t height = 10, int32_t sheep = 10, QObject *parent = 0);
     ~CTableModel();
 
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
@@ -20,7 +20,7 @@ signals:
     void gameLost();
     void sheepRemainedDisplay(int32_t sheepCount);
 public slots:
-    void newGame();
+    void newGame(int32_t width, int32_t height, int32_t sheep);
     void onTableClicked(const QModelIndex &index);
     void onRightClicked(const QModelIndex &index);
 private:
@@ -28,11 +28,8 @@ private:
     void clearModel();
     void discover(const QModelIndex &index);
 
-    int32_t m_width;
-    int32_t m_height;
-    int32_t m_sheepTotal;
     int32_t m_sheepDisplay;
-    CModel* m_model;
+    CModel  m_model;
     bool    m_initialized;
 };
 

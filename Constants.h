@@ -4,6 +4,7 @@
 #include <QString>
 
 const QString APP               = "SheepSweeper";
+const QString ORG               = "katecpp";
 
 const QString SMALL_SHEEP_PATH  = ":/images/small_sheep.png";
 const QString BIG_SHEEP_PATH    = ":/images/big_sheep.png";
@@ -12,6 +13,10 @@ const QString QUESTION_PATH     = ":/images/question.png";
 
 const int32_t FIELD_SIZE        = 24;
 const int32_t ICON_SIZE         = 16;
+
+const int32_t DEFAULT_HEIGHT    = 10;
+const int32_t DEFAULT_WIDTH     = 10;
+const int32_t DEFAULT_SHEEP     = 10;
 
 const int32_t MSG_TIMEOUT       = 5000;
 
