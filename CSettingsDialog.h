@@ -12,15 +12,14 @@ class CSettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit CSettingsDialog(QWidget *parent = 0);
     ~CSettingsDialog();
-
     static bool getPreferences(int32_t& width, int32_t& height, int32_t& sheep, QWidget* parent = 0);
 
 public slots:
     void updateRange();
 
 private:
+    explicit CSettingsDialog(QWidget *parent = 0);
     Ui::CSettingsDialog *ui;
 };
 

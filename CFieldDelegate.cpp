@@ -18,7 +18,7 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     getStyleForField(field, option, buttonStyle);
 
     QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonStyle, painter,
-                                       qobject_cast<QWidget *>(this->parent()) );
+                                       qobject_cast<QWidget *>(this->parent()));
 }
 
 QSize CFieldDelegate::sizeHint(const QStyleOptionViewItem & /* option */,

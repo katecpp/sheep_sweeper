@@ -31,7 +31,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowIcon(QIcon(QPixmap(BIG_SHEEP_PATH)));
     setWindowTitle(APP);
-
     newGame();
 }
 
@@ -167,6 +166,7 @@ void MainWindow::updateView()
     int32_t h = ui->m_view->rowHeight(1) * m_model->rowCount() + 2;
     int32_t w = ui->m_view->columnWidth(1) * m_model->columnCount() + 2;
     ui->m_view->setFixedSize(w, h);
+    layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 void MainWindow::loadSettings()
