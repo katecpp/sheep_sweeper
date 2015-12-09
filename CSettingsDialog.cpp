@@ -22,22 +22,22 @@ CSettingsDialog::~CSettingsDialog()
     delete ui;
 }
 
-bool CSettingsDialog::getPreferences(int32_t &width, int32_t &height, int32_t &sheep, QWidget *parent)
+bool CSettingsDialog::getPreferences(SPreferences &prefs, QWidget *parent)
 {
     bool retValue = false;
 
     CSettingsDialog dialog(parent);
 
-    dialog.ui->heightSpinBox->setValue(height);
-    dialog.ui->widthSpinBox->setValue(width);
-    dialog.ui->sheepSpinBox->setValue(sheep);
+    dialog.ui->heightSpinBox->setValue(prefs.width);
+    dialog.ui->widthSpinBox->setValue(prefs.height);
+    dialog.ui->sheepSpinBox->setValue(prefs.sheep);
 
     if (dialog.exec() == QDialog::Accepted)
     {
         qDebug() << "Accepted";
-        height  = dialog.ui->heightSpinBox->value();
-        width   = dialog.ui->widthSpinBox->value();
-        sheep   = dialog.ui->sheepSpinBox->value();
+        prefs.width  = dialog.ui->heightSpinBox->value();
+        prefs.height   = dialog.ui->widthSpinBox->value();
+        prefs.sheep   = dialog.ui->sheepSpinBox->value();
         retValue = true;
     }
     else

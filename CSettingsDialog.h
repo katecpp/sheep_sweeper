@@ -1,6 +1,7 @@
 #ifndef CSETTINGSDIALOG_H
 #define CSETTINGSDIALOG_H
 
+#include <SPreferences.h>
 #include <QDialog>
 
 namespace Ui {
@@ -13,7 +14,7 @@ class CSettingsDialog : public QDialog
 
 public:
     ~CSettingsDialog();
-    static bool getPreferences(int32_t& width, int32_t& height, int32_t& sheep, QWidget* parent = 0);
+    static bool getPreferences(SPreferences &prefs, QWidget* parent = 0);
 
 public slots:
     void updateRange();

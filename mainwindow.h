@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <CTableModel.h>
 #include <CTableView.h>
+#include <SPreferences.h>
 
 namespace Ui {
 class MainWindow;
@@ -39,9 +40,7 @@ private:
     Ui::MainWindow*     ui;
     CTableModel*        m_model;
     QTimer*             m_timer;
-    int32_t             m_height;
-    int32_t             m_width;
-    int32_t             m_sheep;
+    SPreferences        m_prefs;
 };
 
 #endif // MAINWINDOW_H

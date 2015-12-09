@@ -23,11 +23,6 @@ CTopWidget::~CTopWidget()
     delete ui;
 }
 
-QSize CTopWidget::sizeHint() const
-{
-    return QSize(50, 70);
-}
-
 void CTopWidget::incrementTimer()
 {
     m_time++;

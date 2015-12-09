@@ -35,7 +35,6 @@ private:
     int32_t             m_width;
     int32_t             m_height;
     int32_t             m_totalSheepNr;
-    int32_t             m_lurkingSheepNr;
     int32_t             m_discoveredFieldsNr;
     std::vector<SField> m_data;
 };

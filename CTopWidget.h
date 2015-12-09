@@ -14,7 +14,6 @@ class CTopWidget : public QWidget
 public:
     explicit CTopWidget(QWidget *parent = 0);
     ~CTopWidget();
-    virtual QSize sizeHint() const;
 
 signals:
     void buttonClicked();

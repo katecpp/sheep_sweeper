@@ -9,7 +9,6 @@ CModel::CModel(int32_t width, int32_t height, int32_t sheepNumber)
     : m_width(width),
       m_height(height),
       m_totalSheepNr(sheepNumber),
-      m_lurkingSheepNr(sheepNumber),
       m_discoveredFieldsNr(0),
       m_data()
 {
@@ -37,7 +36,6 @@ void CModel::reset(int32_t width, int32_t height, int32_t sheepNumber)
     m_width = width;
     m_height = height;
     m_totalSheepNr = sheepNumber;
-    m_lurkingSheepNr = m_totalSheepNr;
     m_discoveredFieldsNr = 0;
     m_data.clear();
 

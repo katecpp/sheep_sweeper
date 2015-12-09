@@ -15,9 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_model(nullptr),
     m_timer(nullptr),
-    m_height(DEFAULT_HEIGHT),
-    m_width(DEFAULT_WIDTH),
-    m_sheep(DEFAULT_SHEEP)
+    m_prefs()
 {
     ui->setupUi(this);
 
@@ -47,7 +45,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::initTable()
 {
-    m_model = new CTableModel(m_width, m_height, m_sheep, this);
+    m_model = new CTableModel(m_prefs.height, m_prefs.width, m_prefs.sheep, this);
 
     CFieldDelegate *delegate = new CFieldDelegate(this);
     ui->m_view->setItemDelegate(delegate);
@@ -123,7 +121,7 @@ void MainWindow::newGame()
         m_timer->stop();
     }
 
-    m_model->newGame(m_width, m_height, m_sheep);
+    m_model->newGame(m_prefs.height, m_prefs.width, m_prefs.sheep);
     ui->m_view->reset();
     ui->m_view->setModel(m_model);
     ui->m_view->setEnabled(true);
@@ -145,8 +143,7 @@ void MainWindow::onGameWon()
 
 void MainWindow::showPreferences()
 {
-    qDebug() << "Preferences";
-    if (CSettingsDialog::getPreferences(m_width, m_height, m_sheep, this))
+    if (CSettingsDialog::getPreferences(m_prefs, this))
     {
         newGame();
     }
@@ -172,19 +169,19 @@ void MainWindow::updateView()
 void MainWindow::loadSettings()
 {
     QSettings settings;
-    m_height = settings.value("height", int32_t(DEFAULT_HEIGHT)).toInt();
-    m_width  = settings.value("width", int32_t(DEFAULT_WIDTH)).toInt();
-    m_sheep  = settings.value("sheep", int32_t(DEFAULT_SHEEP)).toInt();
+    m_prefs.width = settings.value("height", int32_t(DEFAULT_HEIGHT)).toInt();
+    m_prefs.height  = settings.value("width", int32_t(DEFAULT_WIDTH)).toInt();
+    m_prefs.sheep  = settings.value("sheep", int32_t(DEFAULT_SHEEP)).toInt();
 
-    qDebug() << "Settings: " << m_height << " " << m_width << " " << m_sheep;
+    qDebug() << "Settings: " << m_prefs.width << " " << m_prefs.height << " " << m_prefs.sheep;
 }
 
 void MainWindow::saveSettings()
 {
     qDebug() << "Save settings";
     QSettings settings;
-    settings.setValue("height", m_height);
-    settings.setValue("width", m_width);
-    settings.setValue("sheep", m_sheep);
+    settings.setValue("height", m_prefs.width);
+    settings.setValue("width", m_prefs.height);
+    settings.setValue("sheep", m_prefs.sheep);
 }
 
