@@ -5,13 +5,12 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    a.setOrganizationName(ORG);
-    a.setOrganizationDomain(ORG);
-    a.setApplicationName(APP);
+    a.setOrganizationName(SSw::ORG);
+    a.setOrganizationDomain(SSw::ORG);
+    a.setApplicationName(SSw::APP);
 
-    MainWindow window;
+    SSw::MainWindow window;
     window.show();
     window.updateView();
-    //TODO: app settings
     return a.exec();
 }

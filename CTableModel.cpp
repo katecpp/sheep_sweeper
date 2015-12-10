@@ -3,6 +3,9 @@
 #include <QSize>
 #include <QDebug>
 
+namespace SSw
+{
+
 CTableModel::CTableModel(int32_t width, int32_t height, int32_t sheep, QObject *parent)
     : QAbstractTableModel(parent),
       m_sheepDisplay(sheep),
@@ -72,12 +75,7 @@ void CTableModel::onTableClicked(const QModelIndex &index)
     {
         discover(index);
 
-        if (m_model.field(index.row(), index.column()).sheep)
-        {
-            qDebug() << "You loose!";
-            emit gameLost();
-        }
-        else if (m_model.checkIfWon())
+        if (m_model.checkIfWon())
         {
             qDebug() << "You win!";
             emit gameWon();
@@ -99,7 +97,8 @@ void CTableModel::discover(const QModelIndex &index)
 
     m_model.discover(x, y);
 
-    if (m_model.field(x, y).neighbours == 0 && m_model.field(x, y).sheep == 0)
+    if (m_model.field(x, y).neighbours == 0
+            && m_model.field(x, y).sheep == 0)
     {
         if (!m_model.isDiscovered(x-1, y-1))   discover(index.sibling(x-1, y-1)); // up
         if (!m_model.isDiscovered(x, y-1))     discover(index.sibling(x,   y-1));
@@ -112,6 +111,12 @@ void CTableModel::discover(const QModelIndex &index)
     }
 
     emit dataChanged(index, index);
+
+    if (m_model.field(x, y).sheep && m_model.field(x, y).disarmed == 0)
+    {
+        qDebug() << "1)You loose! : " << x << "," << y;
+        emit gameLost();
+    }
 }
 
 void CTableModel::onRightClicked(const QModelIndex &index)
@@ -165,3 +170,5 @@ void CTableModel::onBothClicked(const QModelIndex &index)
         //TODO: discover all when won
     }
 }
+
+} // namespace SSw

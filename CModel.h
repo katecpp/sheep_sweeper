@@ -5,6 +5,9 @@
 #include <vector>
 #include <SField.h>
 
+namespace SSw
+{
+
 class CModel
 {
 public:
@@ -42,5 +45,6 @@ private:
     std::vector<SField> m_data;
 };
 
+} // namespace SSw
 
 #endif // CMODEL_H

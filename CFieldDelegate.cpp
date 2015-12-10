@@ -3,6 +3,9 @@
 #include <QStylePainter>
 #include <QApplication>
 
+namespace SSw
+{
+
 CFieldDelegate::CFieldDelegate(QObject *parent)
     : QAbstractItemDelegate(parent),
       m_fieldSize(FIELD_SIZE)
@@ -16,7 +19,6 @@ void CFieldDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
     QStyleOptionButton buttonStyle;
     getStyleForField(field, option, buttonStyle);
-
     QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonStyle, painter,
                                        qobject_cast<QWidget *>(this->parent()));
 }
@@ -60,3 +62,5 @@ void CFieldDelegate::getStyleForField(const SField& field, const QStyleOptionVie
         }
     }
 }
+
+} // namespace SSw

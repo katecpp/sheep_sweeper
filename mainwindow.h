@@ -10,6 +10,9 @@ namespace Ui {
 class MainWindow;
 }
 
+namespace SSw
+{
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -42,5 +45,7 @@ private:
     QTimer*             m_timer;
     SPreferences        m_prefs;
 };
+
+} // namespace SSw
 
 #endif // MAINWINDOW_H

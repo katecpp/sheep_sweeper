@@ -4,6 +4,9 @@
 #include <QAbstractTableModel>
 #include <CModel.h>
 
+namespace SSw
+{
+
 class CTableModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -33,5 +36,7 @@ private:
     CModel  m_model;
     bool    m_initialized;
 };
+
+} // namespace SSw
 
 #endif // CTABLEMODEL_H

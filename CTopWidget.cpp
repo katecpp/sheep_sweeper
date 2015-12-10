@@ -3,6 +3,10 @@
 #include <Constants.h>
 #include <QPixmap>
 #include <QIcon>
+
+namespace SSw
+{
+
 CTopWidget::CTopWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CTopWidget),
@@ -44,3 +48,5 @@ void CTopWidget::init()
 {
     connect(ui->pushButton, &QPushButton::clicked, this, &CTopWidget::buttonClicked);
 }
+
+} // namespace SSw

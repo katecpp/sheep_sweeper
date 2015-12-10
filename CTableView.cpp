@@ -1,6 +1,9 @@
 #include <CTableView.h>
 #include <QDebug>
 
+namespace SSw
+{
+
 CTableView::CTableView(QWidget *parent)
     : QTableView(parent)
 {
@@ -22,7 +25,6 @@ void CTableView::mouseReleaseEvent(QMouseEvent* event)
         {
             if (event->buttons() & Qt::RightButton)
             {
-                qDebug() << "Both buttons clicked";
                 emit bothClicked(index);
             }
             else
@@ -39,3 +41,5 @@ void CTableView::mouseReleaseEvent(QMouseEvent* event)
         }
     }
 }
+
+} // namespace SSw

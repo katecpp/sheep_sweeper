@@ -3,6 +3,9 @@
 #include <ctime>
 #include <QDebug>
 
+namespace SSw
+{
+
 using std::rand;
 
 CModel::CModel(int32_t width, int32_t height, int32_t sheepNumber)
@@ -173,11 +176,19 @@ void CModel::disarm(int32_t x, int32_t y)
 
 const SField& CModel::field(int32_t x, int32_t y) const
 {
-    return m_data[y * m_width + x];
+    int32_t id = y * m_width + x;
+    Q_ASSERT(id < size());
+    Q_ASSERT(id >= 0);
+    return m_data.at(id);
 }
 
 SField& CModel::field(int32_t x, int32_t y)
 {
-    return m_data[y * m_width + x];
+    int32_t id = y * m_width + x;
+    Q_ASSERT(id < size());
+    Q_ASSERT(id >= 0);
+    return m_data[id];
 }
+
+} // namespace SSw
 

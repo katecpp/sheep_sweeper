@@ -3,6 +3,9 @@
 
 #include <QString>
 
+namespace SSw
+{
+
 const QString APP               = "SheepSweeper";
 const QString ORG               = "katecpp";
 
@@ -22,6 +25,8 @@ const int32_t MSG_TIMEOUT       = 5000;
 
 const double MIN_DENSITY        = 0.05;
 const double MAX_DENSITY        = 0.95;
+
+} // namespace SSw
 
 #endif // CONSTANTS
 

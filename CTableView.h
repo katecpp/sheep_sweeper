@@ -4,6 +4,9 @@
 #include <QTableView>
 #include <QMouseEvent>
 
+namespace SSw
+{
+
 class CTableView : public QTableView
 {
     Q_OBJECT
@@ -15,5 +18,7 @@ signals:
     void rightClicked(const QModelIndex& index);
     void bothClicked(const QModelIndex& index);
 };
+
+} // namespace SSw
 
 #endif // CTABLEVIEW_H

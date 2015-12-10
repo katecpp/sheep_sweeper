@@ -3,6 +3,9 @@
 #include <stdint.h>
 #include <QMetaType>
 
+namespace SSw
+{
+
 struct SField
 {
     SField() : sheep(0),
@@ -17,7 +20,9 @@ struct SField
     uint8_t neighbours  : 4;
 };
 
-Q_DECLARE_METATYPE(SField)
+} // namespace SSw
+
+Q_DECLARE_METATYPE(SSw::SField)
 
 #endif // SFIELD
 

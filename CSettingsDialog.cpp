@@ -3,6 +3,9 @@
 #include <Constants.h>
 #include <QDebug>
 
+namespace SSw
+{
+
 CSettingsDialog::CSettingsDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CSettingsDialog)
@@ -54,3 +57,5 @@ void CSettingsDialog::updateRange()
     int32_t size = ui->heightSpinBox->value() * ui->widthSpinBox->value();
     ui->sheepSpinBox->setRange(MIN_DENSITY * size, MAX_DENSITY * size);
 }
+
+} // namespace SSw

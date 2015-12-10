@@ -7,6 +7,9 @@ namespace Ui {
 class CTopWidget;
 }
 
+namespace SSw
+{
+
 class CTopWidget : public QWidget
 {
     Q_OBJECT
@@ -29,5 +32,7 @@ private:
     Ui::CTopWidget *ui;
     int32_t        m_time;
 };
+
+} // namespace SSw
 
 #endif // TOPWIDGET_H

@@ -5,6 +5,9 @@
 #include <QModelIndex>
 #include <SField.h>
 
+namespace SSw
+{
+
 class CFieldDelegate : public QAbstractItemDelegate
 {
 public:
@@ -22,5 +25,7 @@ private:
 
     int32_t m_fieldSize;
 };
+
+} // namespace SSw
 
 #endif // CFIELDDELEGATE_H

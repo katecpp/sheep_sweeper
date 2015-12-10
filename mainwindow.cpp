@@ -10,6 +10,9 @@
 #include <Constants.h>
 #include <CSettingsDialog.h>
 
+namespace SSw
+{
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -185,4 +188,6 @@ void MainWindow::saveSettings()
     settings.setValue("width", m_prefs.height);
     settings.setValue("sheep", m_prefs.sheep);
 }
+
+} // namespace SSw
 

@@ -4,6 +4,9 @@
 #include <Constants.h>
 #include <stdint.h>
 
+namespace SSw
+{
+
 struct SPreferences
 {
     SPreferences() : width(DEFAULT_HEIGHT),
@@ -15,6 +18,8 @@ struct SPreferences
     int32_t height;
     int32_t sheep;
 };
+
+} // namespace SSw
 
 #endif // SPREFERENCES_H
 
