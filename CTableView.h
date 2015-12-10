@@ -13,6 +13,7 @@ public:
 
 signals:
     void rightClicked(const QModelIndex& index);
+    void bothClicked(const QModelIndex& index);
 };
 
 #endif // CTABLEVIEW_H

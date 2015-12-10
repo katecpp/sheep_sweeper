@@ -103,6 +103,7 @@ void MainWindow::initConnections()
 {
     connect(ui->m_view, &CTableView::clicked,       m_model, &CTableModel::onTableClicked);
     connect(ui->m_view, &CTableView::rightClicked,  m_model, &CTableModel::onRightClicked);
+    connect(ui->m_view, &CTableView::bothClicked,   m_model, &CTableModel::onBothClicked);
 
     connect(m_model, &CTableModel::gameLost,    this,   &MainWindow::onGameLost);
     connect(m_model, &CTableModel::gameWon,     this,   &MainWindow::onGameWon);

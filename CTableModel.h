@@ -23,6 +23,7 @@ public slots:
     void newGame(int32_t width, int32_t height, int32_t sheep);
     void onTableClicked(const QModelIndex &index);
     void onRightClicked(const QModelIndex &index);
+    void onBothClicked(const QModelIndex &index);
 private:
     void init(const QModelIndex &index);
     void clearModel();

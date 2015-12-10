@@ -138,3 +138,30 @@ void CTableModel::onRightClicked(const QModelIndex &index)
         emit dataChanged(index, index);
     }
 }
+
+void CTableModel::onBothClicked(const QModelIndex &index)
+{
+    int32_t x = index.row();
+    int32_t y = index.column();
+
+    if (m_model.isDiscovered(x, y)
+            && m_model.getNeighboursCount(x, y) == m_model.countFlagsAround(x, y))
+    {
+        qDebug() << "Discover neighbourhood!";
+        if (!m_model.isDiscovered(x-1, y-1))   discover(index.sibling(x-1, y-1)); // up
+        if (!m_model.isDiscovered(x, y-1))     discover(index.sibling(x,   y-1));
+        if (!m_model.isDiscovered(x+1, y-1))   discover(index.sibling(x+1, y-1));
+        if (!m_model.isDiscovered(x-1, y))     discover(index.sibling(x-1, y));   // mid
+        if (!m_model.isDiscovered(x+1, y))     discover(index.sibling(x+1, y));
+        if (!m_model.isDiscovered(x-1, y+1))   discover(index.sibling(x-1, y+1)); // down
+        if (!m_model.isDiscovered(x, y+1))     discover(index.sibling(x,   y+1));
+        if (!m_model.isDiscovered(x+1, y+1))   discover(index.sibling(x+1, y+1));
+    }
+
+    if (m_model.checkIfWon())
+    {
+        qDebug() << "You win!";
+        emit gameWon();
+        //TODO: discover all when won
+    }
+}

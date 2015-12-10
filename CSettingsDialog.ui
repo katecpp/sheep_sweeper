@@ -32,7 +32,7 @@
       <item row="1" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Height</string>
+         <string>Width</string>
         </property>
        </widget>
       </item>
@@ -42,7 +42,7 @@
       <item row="2" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Width</string>
+         <string>Height</string>
         </property>
        </widget>
       </item>

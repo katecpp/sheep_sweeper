@@ -89,6 +89,43 @@ void CModel::populateNeighbourhood()
     }
 }
 
+uint8_t CModel::getFlagValue(int32_t x, int32_t y) const
+{
+    if (x >= 0 && x < m_width && y >= 0 && y < m_height)
+    {
+        return field(x,y).disarmed == 1 ? 1 : 0;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+uint8_t CModel::countFlagsAround(int32_t x, int32_t y) const
+{
+    return getFlagValue    (x-1,   y-1) // up
+            + getFlagValue (x,     y-1)
+            + getFlagValue (x+1,   y-1)
+            + getFlagValue (x-1,   y)   // mid
+            + getFlagValue (x,     y)
+            + getFlagValue (x+1,   y)
+            + getFlagValue (x-1,   y+1) // down
+            + getFlagValue (x,     y+1)
+            + getFlagValue (x+1,   y+1);
+}
+
+uint8_t CModel::getNeighboursCount(int32_t x, int32_t y) const
+{
+    if (x >= 0 && x < m_width && y >= 0 && y < m_height)
+    {
+        return field(x,y).neighbours;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 uint8_t CModel::getSheepValue(int32_t x, int32_t y) const
 {
     if (x >= 0 && x < m_width && y >= 0 && y < m_height)

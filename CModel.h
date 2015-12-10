@@ -17,7 +17,10 @@ public:
     void            reset(int32_t width, int32_t height, int32_t sheepNumber);
     void            populate(int32_t x, int32_t y);
 
+    uint8_t         getNeighboursCount(int32_t x, int32_t y) const;
+    uint8_t         countFlagsAround(int32_t x, int32_t y) const;
     uint8_t         getSheepValue(int32_t x, int32_t y) const;
+    uint8_t         getFlagValue(int32_t x, int32_t y) const;
     uint8_t         isDiscovered(int32_t x, int32_t y) const;
 
     void            discover(int32_t x, int32_t y);
