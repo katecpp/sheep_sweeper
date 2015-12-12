@@ -4,5 +4,8 @@
         <file>images/disarmed.png</file>
         <file>images/question.png</file>
         <file>images/big_sheep.png</file>
+        <file>images/small_red_sheep.png</file>
+        <file>images/disarmed_green.png</file>
+        <file>images/disarmed_red.png</file>
     </qresource>
 </RCC>
