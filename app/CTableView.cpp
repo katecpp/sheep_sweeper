@@ -1,5 +1,6 @@
 #include <CTableView.h>
-#include <QDebug>
+#include <CActiveDelegate.h>
+#include <QHeaderView>
 
 namespace SSw
 {
@@ -7,6 +8,12 @@ namespace SSw
 CTableView::CTableView(QWidget *parent)
     : QTableView(parent)
 {
+    setShowGrid(false);
+    horizontalHeader()->hide();
+    verticalHeader()->hide();
+    horizontalHeader()->setMinimumSectionSize(1);
+    verticalHeader()->setMinimumSectionSize(1);
+    setSelectionMode(QAbstractItemView::NoSelection);
 }
 
 void CTableView::mouseReleaseEvent(QMouseEvent* event)
@@ -40,6 +47,15 @@ void CTableView::mouseReleaseEvent(QMouseEvent* event)
             break;
         }
     }
+}
+
+void CTableView::adjustSizeToContents()
+{
+    resizeColumnsToContents();
+    resizeRowsToContents();
+    int32_t h = rowHeight(1) * model()->rowCount() + 2;
+    int32_t w = columnWidth(1) * model()->columnCount() + 2;
+    setFixedSize(w, h);
 }
 
 } // namespace SSw

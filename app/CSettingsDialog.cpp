@@ -17,6 +17,8 @@ CSettingsDialog::CSettingsDialog(QWidget *parent) :
 
     ui->heightSpinBox->setMinimum(3);
     ui->widthSpinBox->setMinimum(3);
+
+    setWindowTitle(tr("Preferences"));
 }
 
 CSettingsDialog::~CSettingsDialog()

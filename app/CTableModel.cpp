@@ -74,13 +74,6 @@ void CTableModel::onTableClicked(const QModelIndex &index)
     if (m_model.field(x, y).disarmed == 0)
     {
         discover(index);
-
-        if (m_model.checkIfWon())
-        {
-            qDebug() << "You win!";
-            emit gameWon();
-            //TODO: discover all when won
-        }
     }
 }
 
@@ -100,22 +93,28 @@ void CTableModel::discover(const QModelIndex &index)
     if (m_model.field(x, y).neighbours == 0
             && m_model.field(x, y).sheep == 0)
     {
-        if (!m_model.isDiscovered(x-1, y-1))   discover(index.sibling(x-1, y-1)); // up
-        if (!m_model.isDiscovered(x, y-1))     discover(index.sibling(x,   y-1));
-        if (!m_model.isDiscovered(x+1, y-1))   discover(index.sibling(x+1, y-1));
-        if (!m_model.isDiscovered(x-1, y))     discover(index.sibling(x-1, y));   // mid
-        if (!m_model.isDiscovered(x+1, y))     discover(index.sibling(x+1, y));
-        if (!m_model.isDiscovered(x-1, y+1))   discover(index.sibling(x-1, y+1)); // down
-        if (!m_model.isDiscovered(x, y+1))     discover(index.sibling(x,   y+1));
-        if (!m_model.isDiscovered(x+1, y+1))   discover(index.sibling(x+1, y+1));
+        if (!m_model.getDiscovered(x-1, y-1))   discover(index.sibling(x-1, y-1)); // up
+        if (!m_model.getDiscovered(x, y-1))     discover(index.sibling(x,   y-1));
+        if (!m_model.getDiscovered(x+1, y-1))   discover(index.sibling(x+1, y-1));
+        if (!m_model.getDiscovered(x-1, y))     discover(index.sibling(x-1, y));   // mid
+        if (!m_model.getDiscovered(x+1, y))     discover(index.sibling(x+1, y));
+        if (!m_model.getDiscovered(x-1, y+1))   discover(index.sibling(x-1, y+1)); // down
+        if (!m_model.getDiscovered(x, y+1))     discover(index.sibling(x,   y+1));
+        if (!m_model.getDiscovered(x+1, y+1))   discover(index.sibling(x+1, y+1));
     }
 
     emit dataChanged(index, index);
 
     if (m_model.field(x, y).sheep && m_model.field(x, y).disarmed == 0)
     {
-        qDebug() << "1)You loose! : " << x << "," << y;
+        qDebug() << "You loose! : " << x << "," << y;
         emit gameLost();
+    }
+    else if (m_model.checkIfWon())
+    {
+        qDebug() << "You win!";
+        emit gameWon();
+        //TODO: discover all when won
     }
 }
 
@@ -149,25 +148,18 @@ void CTableModel::onBothClicked(const QModelIndex &index)
     int32_t x = index.row();
     int32_t y = index.column();
 
-    if (m_model.isDiscovered(x, y)
-            && m_model.getNeighboursCount(x, y) == m_model.countFlagsAround(x, y))
+    if (m_model.getDiscovered(x, y)
+            && m_model.getNeighbours(x, y) == m_model.countFlagsAround(x, y))
     {
         qDebug() << "Discover neighbourhood!";
-        if (!m_model.isDiscovered(x-1, y-1))   discover(index.sibling(x-1, y-1)); // up
-        if (!m_model.isDiscovered(x, y-1))     discover(index.sibling(x,   y-1));
-        if (!m_model.isDiscovered(x+1, y-1))   discover(index.sibling(x+1, y-1));
-        if (!m_model.isDiscovered(x-1, y))     discover(index.sibling(x-1, y));   // mid
-        if (!m_model.isDiscovered(x+1, y))     discover(index.sibling(x+1, y));
-        if (!m_model.isDiscovered(x-1, y+1))   discover(index.sibling(x-1, y+1)); // down
-        if (!m_model.isDiscovered(x, y+1))     discover(index.sibling(x,   y+1));
-        if (!m_model.isDiscovered(x+1, y+1))   discover(index.sibling(x+1, y+1));
-    }
-
-    if (m_model.checkIfWon())
-    {
-        qDebug() << "You win!";
-        emit gameWon();
-        //TODO: discover all when won
+        if (!m_model.getDiscovered(x-1, y-1))   discover(index.sibling(x-1, y-1)); // up
+        if (!m_model.getDiscovered(x, y-1))     discover(index.sibling(x,   y-1));
+        if (!m_model.getDiscovered(x+1, y-1))   discover(index.sibling(x+1, y-1));
+        if (!m_model.getDiscovered(x-1, y))     discover(index.sibling(x-1, y));   // mid
+        if (!m_model.getDiscovered(x+1, y))     discover(index.sibling(x+1, y));
+        if (!m_model.getDiscovered(x-1, y+1))   discover(index.sibling(x-1, y+1)); // down
+        if (!m_model.getDiscovered(x, y+1))     discover(index.sibling(x,   y+1));
+        if (!m_model.getDiscovered(x+1, y+1))   discover(index.sibling(x+1, y+1));
     }
 }
 

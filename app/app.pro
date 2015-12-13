@@ -2,7 +2,6 @@ QT += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-
 TEMPLATE = app
 
 HEADERS += \
@@ -15,23 +14,24 @@ HEADERS += \
     CTableModel.h \
     Constants.h \
     CModel.h \
-    CFieldDelegate.h
+    CInactiveDelegate.h \
+    CActiveDelegate.h
 
 SOURCES += main.cpp \
     CSettingsDialog.cpp \
-    CFieldDelegate.cpp \
     CModel.cpp \
     CTableModel.cpp \
     CTableView.cpp \
     mainwindow.cpp \
-    CTopWidget.cpp
+    CTopWidget.cpp \
+    CInactiveDelegate.cpp \
+    CActiveDelegate.cpp
 
 FORMS += \
     mainwindow.ui \
     CTopWidget.ui \
     CSettingsDialog.ui
 
-CONFIG   += c++14
-
-RESOURCES += \
-        images.qrc
+CONFIG       += c++14
+RESOURCES    += images.qrc
+TRANSLATIONS += trans_pl.ts

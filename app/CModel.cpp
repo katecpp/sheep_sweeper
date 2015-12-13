@@ -77,22 +77,22 @@ void CModel::populateNeighbourhood()
         for (int32_t y = 0; y < m_height; ++y)
         {
             uint8_t sheepValue =
-                    getSheepValue   (x-1,   y-1) // up
-                    + getSheepValue (x,     y-1)
-                    + getSheepValue (x+1,   y-1)
-                    + getSheepValue (x-1,   y)   // mid
-                    + getSheepValue (x,     y)
-                    + getSheepValue (x+1,   y)
-                    + getSheepValue (x-1,   y+1) // down
-                    + getSheepValue (x,     y+1)
-                    + getSheepValue (x+1,   y+1);
+                    getSheep   (x-1,   y-1) // up
+                    + getSheep (x,     y-1)
+                    + getSheep (x+1,   y-1)
+                    + getSheep (x-1,   y)   // mid
+                    + getSheep (x,     y)
+                    + getSheep (x+1,   y)
+                    + getSheep (x-1,   y+1) // down
+                    + getSheep (x,     y+1)
+                    + getSheep (x+1,   y+1);
 
             field(x,y).neighbours = sheepValue;
         }
     }
 }
 
-uint8_t CModel::getFlagValue(int32_t x, int32_t y) const
+uint8_t CModel::getFlag(int32_t x, int32_t y) const
 {
     if (x >= 0 && x < m_width && y >= 0 && y < m_height)
     {
@@ -106,18 +106,18 @@ uint8_t CModel::getFlagValue(int32_t x, int32_t y) const
 
 uint8_t CModel::countFlagsAround(int32_t x, int32_t y) const
 {
-    return getFlagValue    (x-1,   y-1) // up
-            + getFlagValue (x,     y-1)
-            + getFlagValue (x+1,   y-1)
-            + getFlagValue (x-1,   y)   // mid
-            + getFlagValue (x,     y)
-            + getFlagValue (x+1,   y)
-            + getFlagValue (x-1,   y+1) // down
-            + getFlagValue (x,     y+1)
-            + getFlagValue (x+1,   y+1);
+    return getFlag    (x-1,   y-1) // up
+            + getFlag (x,     y-1)
+            + getFlag (x+1,   y-1)
+            + getFlag (x-1,   y)   // mid
+            + getFlag (x,     y)
+            + getFlag (x+1,   y)
+            + getFlag (x-1,   y+1) // down
+            + getFlag (x,     y+1)
+            + getFlag (x+1,   y+1);
 }
 
-uint8_t CModel::getNeighboursCount(int32_t x, int32_t y) const
+uint8_t CModel::getNeighbours(int32_t x, int32_t y) const
 {
     if (x >= 0 && x < m_width && y >= 0 && y < m_height)
     {
@@ -129,7 +129,7 @@ uint8_t CModel::getNeighboursCount(int32_t x, int32_t y) const
     }
 }
 
-uint8_t CModel::getSheepValue(int32_t x, int32_t y) const
+uint8_t CModel::getSheep(int32_t x, int32_t y) const
 {
     if (x >= 0 && x < m_width && y >= 0 && y < m_height)
     {
@@ -141,7 +141,7 @@ uint8_t CModel::getSheepValue(int32_t x, int32_t y) const
     }
 }
 
-uint8_t CModel::isDiscovered(int32_t x, int32_t y) const
+uint8_t CModel::getDiscovered(int32_t x, int32_t y) const
 {
     if (x >= 0 && x < m_width && y >= 0 && y < m_height)
     {
@@ -177,16 +177,14 @@ void CModel::disarm(int32_t x, int32_t y)
 const SField& CModel::field(int32_t x, int32_t y) const
 {
     int32_t id = y * m_width + x;
-    Q_ASSERT(id < size());
-    Q_ASSERT(id >= 0);
+    Q_ASSERT(id >= 0 && id < size());
     return m_data.at(id);
 }
 
 SField& CModel::field(int32_t x, int32_t y)
 {
     int32_t id = y * m_width + x;
-    Q_ASSERT(id < size());
-    Q_ASSERT(id >= 0);
+    Q_ASSERT(id >= 0 && id < size());
     return m_data[id];
 }
 

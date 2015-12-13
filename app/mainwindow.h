@@ -2,9 +2,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 #include <CTableModel.h>
 #include <CTableView.h>
 #include <SPreferences.h>
+#include <CActiveDelegate.h>
+#include <CInactiveDelegate.h>
 
 namespace Ui {
 class MainWindow;
@@ -42,8 +45,10 @@ private:
 
     Ui::MainWindow*     ui;
     CTableModel*        m_model;
-    QTimer*             m_timer;
+    QTimer              m_timer;
     SPreferences        m_prefs;
+    CActiveDelegate     m_activeDelegate;
+    CInactiveDelegate   m_inactiveDelegate;
 };
 
 } // namespace SSw

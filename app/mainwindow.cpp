@@ -1,14 +1,13 @@
 #include <mainwindow.h>
 #include <ui_mainwindow.h>
-#include <CFieldDelegate.h>
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QSettings>
 #include <QDebug>
 #include <CTopWidget.h>
-#include <QTimer>
 #include <Constants.h>
 #include <CSettingsDialog.h>
+#include <CActiveDelegate.h>
 
 namespace SSw
 {
@@ -17,8 +16,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_model(nullptr),
-    m_timer(nullptr),
-    m_prefs()
+    m_timer(),
+    m_prefs(),
+    m_activeDelegate(),
+    m_inactiveDelegate()
 {
     ui->setupUi(this);
 
@@ -49,16 +50,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::initTable()
 {
     m_model = new CTableModel(m_prefs.height, m_prefs.width, m_prefs.sheep, this);
-
-    CFieldDelegate *delegate = new CFieldDelegate(this);
-    ui->m_view->setItemDelegate(delegate);
-    ui->m_view->setShowGrid(false);
-    ui->m_view->horizontalHeader()->hide();
-    ui->m_view->verticalHeader()->hide();
-    ui->m_view->horizontalHeader()->setMinimumSectionSize(1);
-    ui->m_view->verticalHeader()->setMinimumSectionSize(1);
     ui->m_view->setModel(m_model);
-    ui->m_view->setSelectionMode(QAbstractItemView::NoSelection);
+    ui->m_view->setItemDelegate(&m_activeDelegate);
 }
 
 void MainWindow::initMenubar()
@@ -95,11 +88,8 @@ void  MainWindow::initStatusBar()
 
 void MainWindow::initTimer()
 {
-    m_timer = new QTimer(this);
-    m_timer->setInterval(1000);
-    connect(m_model, SIGNAL(gameStarted()), m_timer, SLOT(start())); // TODO: to Qt5
-    connect(m_model, &CTableModel::gameLost,    m_timer, &QTimer::stop);
-    connect(m_model, &CTableModel::gameWon,     m_timer, &QTimer::stop);
+    m_timer.setInterval(1000);
+    connect(m_model, SIGNAL(gameStarted()), &m_timer, SLOT(start())); // TODO: to Qt5
 }
 
 void MainWindow::initConnections()
@@ -108,27 +98,25 @@ void MainWindow::initConnections()
     connect(ui->m_view, &CTableView::rightClicked,  m_model, &CTableModel::onRightClicked);
     connect(ui->m_view, &CTableView::bothClicked,   m_model, &CTableModel::onBothClicked);
 
-    connect(m_model, &CTableModel::gameLost,    this,   &MainWindow::onGameLost);
-    connect(m_model, &CTableModel::gameWon,     this,   &MainWindow::onGameWon);
-
-    connect(m_timer, &QTimer::timeout, this->ui->topWidget, &CTopWidget::incrementTimer);
+    connect(&m_timer, &QTimer::timeout, this->ui->topWidget, &CTopWidget::incrementTimer);
     connect(m_model, &CTableModel::sheepRemainedDisplay, ui->topWidget, &CTopWidget::setSheepRemainedDisplay);
     //TODO: pressed event
+
+    connect(m_model, &CTableModel::gameLost,        this, &MainWindow::onGameLost);
+    connect(m_model, &CTableModel::gameWon,         this, &MainWindow::onGameWon);
 
     connect(ui->topWidget, &CTopWidget::buttonClicked, this, &MainWindow::newGame);
 }
 
 void MainWindow::newGame()
 {
-    if (m_timer->isActive())
-    {
-        m_timer->stop();
-    }
+    m_timer.stop();
 
     m_model->newGame(m_prefs.height, m_prefs.width, m_prefs.sheep);
     ui->m_view->reset();
     ui->m_view->setModel(m_model);
     ui->m_view->setEnabled(true);
+    ui->m_view->setItemDelegate(&m_activeDelegate);
     ui->topWidget->resetTimer();
     statusBar()->showMessage(tr("Good luck!"), MSG_TIMEOUT);
     updateView();
@@ -136,13 +124,18 @@ void MainWindow::newGame()
 
 void MainWindow::onGameLost()
 {
-    ui->m_view->setDisabled(true);
+    m_timer.stop();
     statusBar()->showMessage(tr("Unfortunately, you died."), MSG_TIMEOUT);
+    ui->m_view->setItemDelegate(&m_inactiveDelegate);
+    ui->m_view->setDisabled(true);
 }
 
 void MainWindow::onGameWon()
 {
+    m_timer.stop();
     statusBar()->showMessage(tr("You won!"), MSG_TIMEOUT);
+    ui->m_view->setItemDelegate(&m_inactiveDelegate);
+    ui->m_view->setDisabled(true);
 }
 
 void MainWindow::showPreferences()
@@ -161,12 +154,7 @@ void MainWindow::showAboutBox()
 
 void MainWindow::updateView()
 {
-    ui->m_view->resizeColumnsToContents();
-    ui->m_view->resizeRowsToContents();
-
-    int32_t h = ui->m_view->rowHeight(1) * m_model->rowCount() + 2;
-    int32_t w = ui->m_view->columnWidth(1) * m_model->columnCount() + 2;
-    ui->m_view->setFixedSize(w, h);
+    ui->m_view->adjustSizeToContents();
     layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
@@ -176,13 +164,10 @@ void MainWindow::loadSettings()
     m_prefs.width = settings.value("height", int32_t(DEFAULT_HEIGHT)).toInt();
     m_prefs.height  = settings.value("width", int32_t(DEFAULT_WIDTH)).toInt();
     m_prefs.sheep  = settings.value("sheep", int32_t(DEFAULT_SHEEP)).toInt();
-
-    qDebug() << "Settings: " << m_prefs.width << " " << m_prefs.height << " " << m_prefs.sheep;
 }
 
 void MainWindow::saveSettings()
 {
-    qDebug() << "Save settings";
     QSettings settings;
     settings.setValue("height", m_prefs.width);
     settings.setValue("width", m_prefs.height);
