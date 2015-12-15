@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     initTable();
     initMenubar();
-    initStatusBar();
     initTimer();
     initConnections();
 
@@ -81,15 +80,9 @@ void MainWindow::initMenubar()
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(showAboutBox()));
 }
 
-void  MainWindow::initStatusBar()
-{
-    statusBar()->showMessage(tr("Sheep is looking at you..."), MSG_TIMEOUT);
-}
-
 void MainWindow::initTimer()
 {
     m_timer.setInterval(1000);
-    connect(m_model, SIGNAL(gameStarted()), &m_timer, SLOT(start())); // TODO: to Qt5
 }
 
 void MainWindow::initConnections()
@@ -99,20 +92,21 @@ void MainWindow::initConnections()
     connect(ui->m_view, &CTableView::bothClicked,   m_model, &CTableModel::onBothClicked);
 
     connect(&m_timer, &QTimer::timeout, this->ui->topWidget, &CTopWidget::incrementTimer);
-    connect(m_model, &CTableModel::sheepRemainedDisplay, ui->topWidget, &CTopWidget::setSheepRemainedDisplay);
+    connect(m_model, SIGNAL(gameStarted()), &m_timer, SLOT(start()));
+
+    connect(m_model, &CTableModel::sheepDisplay, ui->topWidget, &CTopWidget::setSheepRemainedDisplay);
     //TODO: pressed event
 
-    connect(m_model, &CTableModel::gameLost,        this, &MainWindow::onGameLost);
-    connect(m_model, &CTableModel::gameWon,         this, &MainWindow::onGameWon);
-
-    connect(ui->topWidget, &CTopWidget::buttonClicked, this, &MainWindow::newGame);
+    connect(m_model,        &CTableModel::gameLost,         this, &MainWindow::onGameLost);
+    connect(m_model,        &CTableModel::gameWon,          this, &MainWindow::onGameWon);
+    connect(ui->topWidget, &CTopWidget::buttonClicked,      this, &MainWindow::newGame);
 }
 
 void MainWindow::newGame()
 {
     m_timer.stop();
 
-    m_model->newGame(m_prefs.height, m_prefs.width, m_prefs.sheep);
+    m_model->resetModel(m_prefs.height, m_prefs.width, m_prefs.sheep);
     ui->m_view->reset();
     ui->m_view->setModel(m_model);
     ui->m_view->setEnabled(true);
@@ -161,16 +155,16 @@ void MainWindow::updateView()
 void MainWindow::loadSettings()
 {
     QSettings settings;
-    m_prefs.width = settings.value("height", int32_t(DEFAULT_HEIGHT)).toInt();
-    m_prefs.height  = settings.value("width", int32_t(DEFAULT_WIDTH)).toInt();
-    m_prefs.sheep  = settings.value("sheep", int32_t(DEFAULT_SHEEP)).toInt();
+    m_prefs.width   = settings.value("width", int32_t(DEFAULT_WIDTH)).toInt();
+    m_prefs.height  = settings.value("height", int32_t(DEFAULT_HEIGHT)).toInt();
+    m_prefs.sheep   = settings.value("sheep", int32_t(DEFAULT_SHEEP)).toInt();
 }
 
 void MainWindow::saveSettings()
 {
     QSettings settings;
-    settings.setValue("height", m_prefs.width);
-    settings.setValue("width", m_prefs.height);
+    settings.setValue("width", m_prefs.width);
+    settings.setValue("height", m_prefs.height);
     settings.setValue("sheep", m_prefs.sheep);
 }
 

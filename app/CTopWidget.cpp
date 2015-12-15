@@ -19,7 +19,6 @@ CTopWidget::CTopWidget(QWidget *parent) :
     QPixmap smallSheep(SMALL_SHEEP_PATH);
     QIcon buttonIcon(smallSheep);
     ui->pushButton->setIcon(buttonIcon);
-    //ui->pushButton->setIconSize(buttonIcon.size());
 }
 
 CTopWidget::~CTopWidget()

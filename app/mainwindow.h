@@ -38,7 +38,6 @@ private:
     void initTable();
     void initMenubar();
     void initConnections();
-    void initStatusBar();
     void initTimer();
     void loadSettings();
     void saveSettings();

@@ -18,7 +18,6 @@ CModel::CModel(int32_t width, int32_t height, int32_t sheepNumber)
     createBoard();
 }
 
-//BUG: Once returned false positive
 bool CModel::checkIfWon() const
 {
     return (size() - m_discoveredFieldsNr) == m_totalSheepNr;
