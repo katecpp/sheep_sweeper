@@ -12,7 +12,7 @@ class CTableModel : public QAbstractTableModel
     Q_OBJECT
 public:
 
-    explicit CTableModel(int32_t width, int32_t height, int32_t sheep, QObject *parent = 0);
+    explicit CTableModel(QObject *parent = 0);
     ~CTableModel();
 
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;

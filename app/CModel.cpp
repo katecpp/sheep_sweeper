@@ -8,28 +8,18 @@ namespace SSw
 
 using std::rand;
 
-CModel::CModel(int32_t width, int32_t height, int32_t sheepNumber)
-    : m_width(width),
-      m_height(height),
-      m_totalSheepNr(sheepNumber),
+CModel::CModel()
+    : m_width(0),
+      m_height(0),
+      m_totalSheepNr(0),
       m_discoveredFieldsNr(0),
       m_data()
 {
-    createBoard();
 }
 
 bool CModel::checkIfWon() const
 {
     return (size() - m_discoveredFieldsNr) == m_totalSheepNr;
-}
-
-void CModel::createBoard()
-{
-    int64_t fieldsNr = size();
-    m_data.reserve(fieldsNr);
-    m_data.insert(m_data.begin(), fieldsNr, SField());
-
-    srand(std::time(0));
 }
 
 void CModel::reset(int32_t width, int32_t height, int32_t sheepNumber)
@@ -41,7 +31,11 @@ void CModel::reset(int32_t width, int32_t height, int32_t sheepNumber)
     m_discoveredFieldsNr = 0;
     m_data.clear();
 
-    createBoard();
+    int64_t fieldsNr = size();
+    m_data.reserve(fieldsNr);
+    m_data.insert(m_data.begin(), fieldsNr, SField());
+
+    srand(std::time(0));
 }
 
 void CModel::populate(int32_t x, int32_t y)

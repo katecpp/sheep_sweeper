@@ -11,7 +11,7 @@ namespace SSw
 class CModel
 {
 public:
-    CModel(int32_t width, int32_t height, int32_t sheepNumber);
+    CModel();
 
     int32_t         width()  const { return m_width; }
     int32_t         height() const { return m_height; }
@@ -34,7 +34,6 @@ public:
     const SField&   field(int32_t x, int32_t y) const;
 
 private:
-    void            createBoard();
     void            populateSheepCrew(int32_t x, int32_t y);
     void            populateNeighbourhood();
 

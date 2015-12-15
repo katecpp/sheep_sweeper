@@ -43,7 +43,7 @@ private:
     void saveSettings();
 
     Ui::MainWindow*     ui;
-    CTableModel*        m_model;
+    CTableModel         m_model;
     QTimer              m_timer;
     SPreferences        m_prefs;
     CActiveDelegate     m_activeDelegate;
