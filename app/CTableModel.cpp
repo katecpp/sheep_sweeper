@@ -6,13 +6,12 @@
 namespace SSw
 {
 
-CTableModel::CTableModel(int32_t width, int32_t height, int32_t sheep, QObject *parent)
+CTableModel::CTableModel(QObject *parent)
     : QAbstractTableModel(parent),
-      m_model(width, height, sheep),
-      m_sheepDisplay(sheep),
+      m_model(),
+      m_sheepDisplay(0),
       m_initialized(false)
 {
-    emit sheepDisplay(sheep);
 }
 
 CTableModel::~CTableModel()

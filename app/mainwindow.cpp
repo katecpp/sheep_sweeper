@@ -15,7 +15,7 @@ namespace SSw
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_model(nullptr),
+    m_model(),
     m_timer(),
     m_prefs(),
     m_activeDelegate(),
@@ -49,8 +49,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::initTable()
 {
-    m_model = new CTableModel(m_prefs.height, m_prefs.width, m_prefs.sheep, this);
-    ui->m_view->setModel(m_model);
+    ui->m_view->setModel(&m_model);
     ui->m_view->setItemDelegate(&m_activeDelegate);
 }
 
@@ -97,14 +96,14 @@ void MainWindow::initTimer()
 
 void MainWindow::initConnections()
 {
-    connect(ui->m_view, &CTableView::clicked,       m_model, &CTableModel::onTableClicked);
-    connect(ui->m_view, &CTableView::rightClicked,  m_model, &CTableModel::onRightClicked);
-    connect(ui->m_view, &CTableView::bothClicked,   m_model, &CTableModel::onBothClicked);
+    connect(ui->m_view, &CTableView::clicked,       &m_model, &CTableModel::onTableClicked);
+    connect(ui->m_view, &CTableView::rightClicked,  &m_model, &CTableModel::onRightClicked);
+    connect(ui->m_view, &CTableView::bothClicked,   &m_model, &CTableModel::onBothClicked);
 
     connect(&m_timer, &QTimer::timeout, this->ui->topWidget, &CTopWidget::incrementTimer);
-    connect(m_model, SIGNAL(gameStarted()), &m_timer, SLOT(start()));
+    connect(&m_model, SIGNAL(gameStarted()), &m_timer, SLOT(start()));
 
-    connect(m_model, &CTableModel::sheepDisplay, ui->topWidget, &CTopWidget::setSheepRemainedDisplay);
+    connect(&m_model, &CTableModel::sheepDisplay, ui->topWidget, &CTopWidget::setSheepRemainedDisplay);
     //TODO: pressed event
 
     connect(m_model,        &CTableModel::gameLost,         this, &MainWindow::onGameLost);
@@ -116,9 +115,9 @@ void MainWindow::newGame()
 {
     m_timer.stop();
 
-    m_model->resetModel(m_prefs.height, m_prefs.width, m_prefs.sheep);
+    m_model.resetModel(m_prefs.height, m_prefs.width, m_prefs.sheep);
     ui->m_view->reset();
-    ui->m_view->setModel(m_model);
+    ui->m_view->setModel(&m_model);
     ui->m_view->setEnabled(true);
     ui->m_view->setItemDelegate(&m_activeDelegate);
     ui->topWidget->resetTimer();
