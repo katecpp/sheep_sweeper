@@ -19,7 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_timer(),
     m_prefs(),
     m_activeDelegate(),
-    m_inactiveDelegate()
+    m_inactiveDelegate(),
+    m_translator()
 {
     ui->setupUi(this);
 
@@ -70,14 +71,23 @@ void MainWindow::initMenubar()
     QMenu *helpMenu = new QMenu(tr("&Help"), this);
     QAction *aboutAction = helpMenu->addAction(tr("&About"));
 
+    QMenu *languageMenu = new QMenu(tr("&Language"), this);
+    QAction *setPlAction = languageMenu->addAction(tr("&Polish"));
+    QAction *setEngAction = languageMenu->addAction(tr("&English"));
+
     menuBar()->addMenu(fileMenu);
     menuBar()->addSeparator();
     menuBar()->addMenu(helpMenu);
+    menuBar()->addSeparator();
+    menuBar()->addMenu(languageMenu);
 
-    connect(newGameAction, SIGNAL(triggered()), this, SLOT(newGame()));
-    connect(preferencesAction, SIGNAL(triggered(bool)), this, SLOT(showPreferences()));
-    connect(quitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
-    connect(aboutAction, SIGNAL(triggered()), this, SLOT(showAboutBox()));
+    connect(quitAction,         &QAction::triggered, qApp, &QApplication::quit);
+    connect(newGameAction,      &QAction::triggered, this, &MainWindow::newGame);
+    connect(preferencesAction,  &QAction::triggered, this, &MainWindow::showPreferences);
+    connect(aboutAction,        &QAction::triggered, this, &MainWindow::showAboutBox);
+//TODO: setting language
+//    connect(setPlAction,        &QAction::triggered, this, &MainWindow::setLanguage);
+//    connect(setEngAction,       &QAction::triggered, this, &MainWindow::setLanguage);
 }
 
 void MainWindow::initTimer()
@@ -99,7 +109,7 @@ void MainWindow::initConnections()
 
     connect(m_model,        &CTableModel::gameLost,         this, &MainWindow::onGameLost);
     connect(m_model,        &CTableModel::gameWon,          this, &MainWindow::onGameWon);
-    connect(ui->topWidget, &CTopWidget::buttonClicked,      this, &MainWindow::newGame);
+    connect(ui->topWidget,  &CTopWidget::buttonClicked,     this, &MainWindow::newGame);
 }
 
 void MainWindow::newGame()
@@ -112,6 +122,8 @@ void MainWindow::newGame()
     ui->m_view->setEnabled(true);
     ui->m_view->setItemDelegate(&m_activeDelegate);
     ui->topWidget->resetTimer();
+
+    ui->topWidget->setDefault();
     statusBar()->showMessage(tr("Good luck!"), MSG_TIMEOUT);
     updateView();
 }
@@ -122,6 +134,7 @@ void MainWindow::onGameLost()
     statusBar()->showMessage(tr("Unfortunately, you died."), MSG_TIMEOUT);
     ui->m_view->setItemDelegate(&m_inactiveDelegate);
     ui->m_view->setDisabled(true);
+    ui->topWidget->setVictory(false);
 }
 
 void MainWindow::onGameWon()
@@ -130,6 +143,7 @@ void MainWindow::onGameWon()
     statusBar()->showMessage(tr("You won!"), MSG_TIMEOUT);
     ui->m_view->setItemDelegate(&m_inactiveDelegate);
     ui->m_view->setDisabled(true);
+    ui->topWidget->setVictory(true);
 }
 
 void MainWindow::showPreferences()
@@ -140,10 +154,30 @@ void MainWindow::showPreferences()
     }
 }
 
+void MainWindow::setLanguage(const QString langFile)
+{
+    qDebug() << langFile;
+
+    bool result = m_translator.load(langFile);
+
+    if (!result)
+    {
+        qWarning("Failed to load the translation file");
+    }
+    else
+    {
+        qApp->installTranslator(&m_translator);
+        ui->retranslateUi(this);
+    }
+}
+
 void MainWindow::showAboutBox()
 {
-    //TODO: credit for icon
-    QMessageBox::about(this, APP, tr("Try to avoid the furious sheep."));
+    QMessageBox::about(this, APP, tr("Try to avoid the furious sheep.<br>\
+                    <div>Icon made by <a href='http://www.freepik.com' title='Freepik'>Freepik</a>\
+                    from <a href='http://www.flaticon.com' title='Flaticon'>www.flaticon.com</a>\
+                    is licensed under <a href='http://creativecommons.org/licenses/by/3.0/' \
+                    title='Creative Commons BY 3.0'>CC BY 3.0</a></div>"));
 }
 
 void MainWindow::updateView()

@@ -2,7 +2,6 @@
 #include "ui_CTopWidget.h"
 #include <Constants.h>
 #include <QPixmap>
-#include <QIcon>
 
 namespace SSw
 {
@@ -10,15 +9,15 @@ namespace SSw
 CTopWidget::CTopWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CTopWidget),
-    m_time(0)
+    m_time(0),
+    m_normalFace(QPixmap(NORMAL_FACE)),
+    m_fearFace(QPixmap(FEAR_FACE)),
+    m_happyFace(QPixmap(HAPPY_FACE)),
+    m_sadFace(QPixmap(SAD_FACE))
 {
     ui->setupUi(this);
     init();
     //TODO: setDigitCount
-
-    QPixmap smallSheep(SMALL_SHEEP_PATH);
-    QIcon buttonIcon(smallSheep);
-    ui->pushButton->setIcon(buttonIcon);
 }
 
 CTopWidget::~CTopWidget()
@@ -43,8 +42,40 @@ void CTopWidget::setSheepRemainedDisplay(int32_t sheepRemained)
     ui->lcdSheep->display(sheepRemained);
 }
 
+void CTopWidget::setPressed(bool pressed)
+{
+    if (pressed)
+    {
+        ui->pushButton->setIcon(m_fearFace);
+    }
+    else
+    {
+        ui->pushButton->setIcon(m_normalFace);
+    }
+}
+
+void CTopWidget::setVictory(bool victory)
+{
+    if (victory)
+    {
+        ui->pushButton->setIcon(m_happyFace);
+    }
+    else
+    {
+        ui->pushButton->setIcon(m_sadFace);
+    }
+}
+
+void CTopWidget::setDefault()
+{
+    ui->pushButton->setIcon(m_normalFace);
+}
+
 void CTopWidget::init()
 {
+    setDefault();
+    ui->pushButton->setIconSize(QSize(30,30));
+
     connect(ui->pushButton, &QPushButton::clicked, this, &CTopWidget::buttonClicked);
 }
 

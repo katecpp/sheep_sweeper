@@ -7,5 +7,9 @@
         <file>images/small_red_sheep.png</file>
         <file>images/disarmed_green.png</file>
         <file>images/disarmed_red.png</file>
+        <file>images/sad_32.png</file>
+        <file>images/fear_32.png</file>
+        <file>images/happy_32.png</file>
+        <file>images/normal_32.png</file>
     </qresource>
 </RCC>

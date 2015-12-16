@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QTranslator>
 #include <CTableModel.h>
 #include <CTableView.h>
 #include <SPreferences.h>
@@ -41,6 +42,7 @@ private:
     void initTimer();
     void loadSettings();
     void saveSettings();
+    void setLanguage(const QString langFile);
 
     Ui::MainWindow*     ui;
     CTableModel*        m_model;
@@ -48,6 +50,7 @@ private:
     SPreferences        m_prefs;
     CActiveDelegate     m_activeDelegate;
     CInactiveDelegate   m_inactiveDelegate;
+    QTranslator         m_translator;
 };
 
 } // namespace SSw

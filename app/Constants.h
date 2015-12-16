@@ -16,6 +16,10 @@ const QString DISARMED_PATH         = ":/images/disarmed.png";
 const QString DISARMED_GREEN_PATH   = ":/images/disarmed_green.png";
 const QString DISARMED_RED_PATH     = ":/images/disarmed_red.png";
 const QString QUESTION_PATH         = ":/images/question.png";
+const QString SAD_FACE              = "://images/sad_32.png";
+const QString NORMAL_FACE           = "://images/normal_32.png";
+const QString FEAR_FACE             = "://images/fear_32.png";
+const QString HAPPY_FACE            = "://images/happy_32.png";
 
 const int32_t FIELD_SIZE        = 24;
 const int32_t ICON_SIZE         = 16;
