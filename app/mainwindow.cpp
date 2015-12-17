@@ -85,7 +85,7 @@ void MainWindow::initMenubar()
     connect(preferencesAction,  &QAction::triggered, this, &MainWindow::showPreferences);
     connect(aboutAction,        &QAction::triggered, this, &MainWindow::showAboutBox);
 //TODO: setting language
-//    connect(setPlAction,        &QAction::triggered, this, &MainWindow::setLanguage);
+    connect(setPlAction,        &QAction::triggered, this, &MainWindow::setLanguage);
 //    connect(setEngAction,       &QAction::triggered, this, &MainWindow::setLanguage);
 }
 
@@ -96,19 +96,24 @@ void MainWindow::initTimer()
 
 void MainWindow::initConnections()
 {
+    // CTopWidget connections
+    connect(ui->m_view, &CTableView::pressed,       ui->topWidget, &CTopWidget::onPressed);
+    connect(ui->m_view, &CTableView::clicked,       ui->topWidget, &CTopWidget::onReleased);
+    connect(&m_timer,   &QTimer::timeout,           ui->topWidget, &CTopWidget::incrementTimer);
+    connect(&m_model,   &CTableModel::sheepDisplay, ui->topWidget, &CTopWidget::setSheepDisplay);
+    connect(&m_model,   &CTableModel::gameLost,     ui->topWidget, &CTopWidget::onLost);
+    connect(&m_model,   &CTableModel::gameWon,      ui->topWidget, &CTopWidget::onWon);
+
+    // CTableModel connections
     connect(ui->m_view, &CTableView::clicked,       &m_model, &CTableModel::onTableClicked);
     connect(ui->m_view, &CTableView::rightClicked,  &m_model, &CTableModel::onRightClicked);
     connect(ui->m_view, &CTableView::bothClicked,   &m_model, &CTableModel::onBothClicked);
 
-    connect(&m_timer, &QTimer::timeout, this->ui->topWidget, &CTopWidget::incrementTimer);
-    connect(&m_model, SIGNAL(gameStarted()), &m_timer, SLOT(start()));
-
-    connect(&m_model, &CTableModel::sheepDisplay, ui->topWidget, &CTopWidget::setSheepRemainedDisplay);
-    //TODO: pressed event
-
-    connect(m_model,        &CTableModel::gameLost,         this, &MainWindow::onGameLost);
-    connect(m_model,        &CTableModel::gameWon,          this, &MainWindow::onGameWon);
-    connect(ui->topWidget,  &CTopWidget::buttonClicked,     this, &MainWindow::newGame);
+    // MainWindow connections
+    connect(&m_model,        &CTableModel::gameLost,         this, &MainWindow::onGameLost);
+    connect(&m_model,        &CTableModel::gameWon,          this, &MainWindow::onGameWon);
+    connect(ui->topWidget,   &CTopWidget::buttonClicked,     this, &MainWindow::newGame);
+    connect(&m_model,        SIGNAL(gameStarted()),          &m_timer, SLOT(start()));
 }
 
 void MainWindow::newGame()
@@ -121,7 +126,6 @@ void MainWindow::newGame()
     ui->m_view->setEnabled(true);
     ui->m_view->setItemDelegate(&m_activeDelegate);
     ui->topWidget->resetTimer();
-
     ui->topWidget->setDefault();
     statusBar()->showMessage(tr("Good luck!"), MSG_TIMEOUT);
     updateView();
@@ -129,11 +133,11 @@ void MainWindow::newGame()
 
 void MainWindow::onGameLost()
 {
+    qDebug() << "OnGameLost";
     m_timer.stop();
     statusBar()->showMessage(tr("Unfortunately, you died."), MSG_TIMEOUT);
     ui->m_view->setItemDelegate(&m_inactiveDelegate);
     ui->m_view->setDisabled(true);
-    ui->topWidget->setVictory(false);
 }
 
 void MainWindow::onGameWon()
@@ -142,22 +146,21 @@ void MainWindow::onGameWon()
     statusBar()->showMessage(tr("You won!"), MSG_TIMEOUT);
     ui->m_view->setItemDelegate(&m_inactiveDelegate);
     ui->m_view->setDisabled(true);
-    ui->topWidget->setVictory(true);
 }
 
 void MainWindow::showPreferences()
 {
-    if (CSettingsDialog::getPreferences(m_prefs, this))
+    bool accepted = CSettingsDialog::getPreferences(m_prefs, this);
+
+    if (accepted)
     {
         newGame();
     }
 }
 
-void MainWindow::setLanguage(const QString langFile)
+void MainWindow::setLanguage()
 {
-    qDebug() << langFile;
-
-    bool result = m_translator.load(langFile);
+    bool result = m_translator.load("trans_pl");
 
     if (!result)
     {
@@ -183,6 +186,20 @@ void MainWindow::updateView()
 {
     ui->m_view->adjustSizeToContents();
     layout()->setSizeConstraint(QLayout::SetFixedSize);
+}
+
+void MainWindow::changeEvent(QEvent* event)
+{
+    qDebug() << "Retranslate ui";
+
+    if (event->type() == QEvent::LanguageChange)
+    {
+        // retranslate designer form (single inheritance approach)
+        ui->retranslateUi(this);
+    }
+
+    // remember to call base class implementation
+    QMainWindow::changeEvent(event);
 }
 
 void MainWindow::loadSettings()

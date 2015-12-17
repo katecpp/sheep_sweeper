@@ -1,5 +1,5 @@
-#include "CTopWidget.h"
-#include "ui_CTopWidget.h"
+#include <CTopWidget.h>
+#include <ui_CTopWidget.h>
 #include <Constants.h>
 #include <QPixmap>
 
@@ -37,33 +37,29 @@ void CTopWidget::resetTimer()
     ui->lcdTime->display(m_time);
 }
 
-void CTopWidget::setSheepRemainedDisplay(int32_t sheepRemained)
+void CTopWidget::setSheepDisplay(int32_t sheepRemained)
 {
     ui->lcdSheep->display(sheepRemained);
 }
 
-void CTopWidget::setPressed(bool pressed)
+void CTopWidget::onPressed()
 {
-    if (pressed)
-    {
-        ui->pushButton->setIcon(m_fearFace);
-    }
-    else
-    {
-        ui->pushButton->setIcon(m_normalFace);
-    }
+    ui->pushButton->setIcon(m_fearFace);
 }
 
-void CTopWidget::setVictory(bool victory)
+void CTopWidget::onReleased()
 {
-    if (victory)
-    {
-        ui->pushButton->setIcon(m_happyFace);
-    }
-    else
-    {
-        ui->pushButton->setIcon(m_sadFace);
-    }
+    ui->pushButton->setIcon(m_normalFace);
+}
+
+void CTopWidget::onWon()
+{
+    ui->pushButton->setIcon(m_happyFace);
+}
+
+void CTopWidget::onLost()
+{
+    ui->pushButton->setIcon(m_sadFace);
 }
 
 void CTopWidget::setDefault()

@@ -17,7 +17,8 @@ void CActiveDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
 {
     SField field = index.model()->data(index, Qt::UserRole).value<SField>();
     QStyleOptionButton buttonStyle;
-    getStyleForField(field, option, buttonStyle);
+    getGeneralsForField(field, option, buttonStyle);
+    getStyleForField(field, buttonStyle);
     QApplication::style()->drawControl(QStyle::CE_PushButton, &buttonStyle, painter,
                                        qobject_cast<QWidget *>(this->parent()));
 }
@@ -28,16 +29,10 @@ QSize CActiveDelegate::sizeHint(const QStyleOptionViewItem & /* option */,
     return QSize(m_fieldSize, m_fieldSize);
 }
 
-void CActiveDelegate::getStyleForField(const SField& field, const QStyleOptionViewItem &option, QStyleOptionButton& buttonStyle) const
+void CActiveDelegate::getStyleForField(const SField& field, QStyleOptionButton& buttonStyle) const
 {
-    buttonStyle.rect        = option.rect;
-    buttonStyle.iconSize    = QSize(ICON_SIZE, ICON_SIZE);
-    buttonStyle.state      |= QStyle::State_Enabled | option.state;
-
     if (field.discovered)
     {
-        buttonStyle.state |= QStyle::State_Sunken;
-
         if (field.neighbours != 0)
         {
             buttonStyle.text = QString::number(field.neighbours);
@@ -45,8 +40,6 @@ void CActiveDelegate::getStyleForField(const SField& field, const QStyleOptionVi
     }
     else
     {
-        buttonStyle.state |= QStyle::State_Raised;
-
         if (field.disarmed == 1)
         {
             buttonStyle.icon = QIcon(QPixmap(DISARMED_PATH));
@@ -55,6 +48,23 @@ void CActiveDelegate::getStyleForField(const SField& field, const QStyleOptionVi
         {
             buttonStyle.icon = QIcon(QPixmap(QUESTION_PATH));
         }
+    }
+}
+
+void CActiveDelegate::getGeneralsForField(const SField& field, const QStyleOptionViewItem &option,
+                      QStyleOptionButton& buttonStyle) const
+{
+    buttonStyle.rect        = option.rect;
+    buttonStyle.iconSize    = QSize(ICON_SIZE, ICON_SIZE);
+    buttonStyle.state      |= QStyle::State_Enabled | option.state;
+
+    if (field.discovered)
+    {
+        buttonStyle.state |= QStyle::State_Sunken;
+    }
+    else
+    {
+        buttonStyle.state |= QStyle::State_Raised;
     }
 }
 

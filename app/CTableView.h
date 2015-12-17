@@ -13,6 +13,7 @@ class CTableView : public QTableView
 public:
     CTableView(QWidget *parent = 0);
     virtual void mouseReleaseEvent(QMouseEvent* event);
+    virtual void mousePressEvent(QMouseEvent * event);
     virtual void adjustSizeToContents();
 
 signals:

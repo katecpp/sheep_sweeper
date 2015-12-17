@@ -49,6 +49,28 @@ void CTableView::mouseReleaseEvent(QMouseEvent* event)
     }
 }
 
+void CTableView::mousePressEvent(QMouseEvent *event)
+{
+    switch (event->button())
+    {
+        case Qt::RightButton:
+        {
+            break;
+        }
+
+        case Qt::LeftButton:
+        {
+            QTableView::mousePressEvent(event);
+            break;
+        }
+
+        default:
+        {
+            break;
+        }
+    }
+}
+
 void CTableView::adjustSizeToContents()
 {
     resizeColumnsToContents();

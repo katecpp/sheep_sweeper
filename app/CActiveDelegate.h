@@ -20,7 +20,10 @@ public:
                    const QModelIndex &index ) const Q_DECL_OVERRIDE;
 
 protected:
-    virtual void getStyleForField(const SField& field, const QStyleOptionViewItem &option,
+    virtual void getStyleForField(const SField& field,
+                          QStyleOptionButton& buttonStyle) const;
+
+    virtual void getGeneralsForField(const SField& field, const QStyleOptionViewItem &option,
                           QStyleOptionButton& buttonStyle) const;
 
     int32_t m_fieldSize;

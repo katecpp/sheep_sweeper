@@ -35,6 +35,7 @@ public slots:
     void onGameLost();
     void onGameWon();
 
+    void changeEvent(QEvent *event);
 private:
     void initTable();
     void initMenubar();
@@ -42,7 +43,7 @@ private:
     void initTimer();
     void loadSettings();
     void saveSettings();
-    void setLanguage(const QString langFile);
+    void setLanguage();
 
     Ui::MainWindow*     ui;
     CTableModel         m_model;

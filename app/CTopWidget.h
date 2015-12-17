@@ -23,11 +23,13 @@ signals:
     void buttonClicked();
 
 public slots:
-    void setSheepRemainedDisplay(int32_t sheepRemained);
+    void setSheepDisplay(int32_t sheepRemained);
     void incrementTimer();
     void resetTimer();
-    void setPressed(bool pressed);
-    void setVictory(bool victory);
+    void onPressed();
+    void onReleased();
+    void onWon();
+    void onLost();
     void setDefault();
 
 private:
