@@ -84,9 +84,9 @@ void MainWindow::initMenubar()
     connect(newGameAction,      &QAction::triggered, this, &MainWindow::newGame);
     connect(preferencesAction,  &QAction::triggered, this, &MainWindow::showPreferences);
     connect(aboutAction,        &QAction::triggered, this, &MainWindow::showAboutBox);
-//TODO: setting language
+    // TODO: setting language
     connect(setPlAction,        &QAction::triggered, this, &MainWindow::setLanguage);
-//    connect(setEngAction,       &QAction::triggered, this, &MainWindow::setLanguage);
+    //    connect(setEngAction,       &QAction::triggered, this, &MainWindow::setLanguage);
 }
 
 void MainWindow::initTimer()
@@ -99,6 +99,7 @@ void MainWindow::initConnections()
     // CTopWidget connections
     connect(ui->m_view, &CTableView::pressed,       ui->topWidget, &CTopWidget::onPressed);
     connect(ui->m_view, &CTableView::clicked,       ui->topWidget, &CTopWidget::onReleased);
+    connect(ui->m_view, &CTableView::bothClicked,   ui->topWidget, &CTopWidget::onReleased);
     connect(&m_timer,   &QTimer::timeout,           ui->topWidget, &CTopWidget::incrementTimer);
     connect(&m_model,   &CTableModel::sheepDisplay, ui->topWidget, &CTopWidget::setSheepDisplay);
     connect(&m_model,   &CTableModel::gameLost,     ui->topWidget, &CTopWidget::onLost);

@@ -13,7 +13,6 @@ const QString SMALL_SHEEP_PATH      = ":/images/small_sheep.png";
 const QString SMALL_RED_SHEEP_PATH  = ":/images/small_red_sheep.png";
 const QString BIG_SHEEP_PATH        = ":/images/big_sheep.png";
 const QString DISARMED_PATH         = ":/images/disarmed.png";
-const QString DISARMED_GREEN_PATH   = ":/images/disarmed_green.png";
 const QString DISARMED_RED_PATH     = ":/images/disarmed_red.png";
 const QString QUESTION_PATH         = ":/images/question.png";
 const QString SAD_FACE              = "://images/sad_32.png";
