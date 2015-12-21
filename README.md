@@ -3,7 +3,7 @@
 ## About game
 SheepSweeper game is implemented with C++/Qt4. This is a modification of well-known MineSweeper game, but instead of mines you need to avoid sheep. 
 
-<img src='https://github.com/katecpp/sheep_sweeper/blob/working/doc/screenshot_1.png?raw=true'/>
+<img src='https://github.com/katecpp/sheep_sweeper/blob/master/doc/screenshot_1.png?raw=true'/>
 
 ### Implementation in progress
 Game is not ready yet, although it's possible to play.
