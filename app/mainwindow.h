@@ -7,8 +7,6 @@
 #include <CTableModel.h>
 #include <CTableView.h>
 #include <SPreferences.h>
-#include <CActiveDelegate.h>
-#include <CInactiveDelegate.h>
 
 namespace Ui {
 class MainWindow;
@@ -26,16 +24,16 @@ public:
     ~MainWindow();
 
     void closeEvent(QCloseEvent *event);
+    void changeEvent(QEvent *event);
 
 public slots:
     void newGame();
+    void onGameLost();
+    void onGameWon();
     void showAboutBox();
     void showPreferences();
     void updateView();
-    void onGameLost();
-    void onGameWon();
 
-    void changeEvent(QEvent *event);
 private:
     void initTable();
     void initMenubar();
@@ -49,8 +47,6 @@ private:
     CTableModel         m_model;
     QTimer              m_timer;
     SPreferences        m_prefs;
-    CActiveDelegate     m_activeDelegate;
-    CInactiveDelegate   m_inactiveDelegate;
     QTranslator         m_translator;
 };
 

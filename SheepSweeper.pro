@@ -6,6 +6,6 @@
 TARGET      = SheepSweeper
 
 TEMPLATE    = subdirs
-CONFIG      +=ordered
+CONFIG      += ordered
 
 SUBDIRS = app

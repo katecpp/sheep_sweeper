@@ -3,6 +3,8 @@
 
 #include <QTableView>
 #include <QMouseEvent>
+#include <CActiveDelegate.h>
+#include <CInactiveDelegate.h>
 
 namespace SSw
 {
@@ -16,9 +18,17 @@ public:
     virtual void mousePressEvent(QMouseEvent * event);
     virtual void adjustSizeToContents();
 
+public slots:
+    void activate();
+    void deactivate();
+
 signals:
     void rightClicked(const QModelIndex& index);
     void bothClicked(const QModelIndex& index);
+
+private:
+    CActiveDelegate     m_activeDelegate;
+    CInactiveDelegate   m_inactiveDelegate;
 };
 
 } // namespace SSw

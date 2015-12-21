@@ -10,6 +10,7 @@ CSettingsDialog::CSettingsDialog(QWidget *parent) :
     ui(new Ui::CSettingsDialog)
 {
     ui->setupUi(this);
+
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &CSettingsDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &CSettingsDialog::reject);
     connect(ui->heightSpinBox, SIGNAL(valueChanged(int)), this, SLOT(updateRange()));
@@ -49,8 +50,9 @@ bool CSettingsDialog::getPreferences(SPreferences &prefs, QWidget *parent)
 
 void CSettingsDialog::updateRange()
 {
-    int32_t size = ui->heightSpinBox->value() * ui->widthSpinBox->value();
-    ui->sheepSpinBox->setRange(MIN_DENSITY * size, MAX_DENSITY * size);
+    int32_t min = MIN_DENSITY * ui->heightSpinBox->value() * ui->widthSpinBox->value();
+    int32_t max = MAX_DENSITY * ui->heightSpinBox->value() * ui->widthSpinBox->value();
+    ui->sheepSpinBox->setRange(min, max);
 }
 
 } // namespace SSw

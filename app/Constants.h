@@ -6,9 +6,11 @@
 namespace SSw
 {
 
+// Global names
 const QString APP               = "SheepSweeper";
 const QString ORG               = "katecpp";
 
+// Icon path
 const QString SMALL_SHEEP_PATH      = ":/images/small_sheep.png";
 const QString SMALL_RED_SHEEP_PATH  = ":/images/small_red_sheep.png";
 const QString BIG_SHEEP_PATH        = ":/images/big_sheep.png";
@@ -20,9 +22,11 @@ const QString NORMAL_FACE           = "://images/normal_32.png";
 const QString FEAR_FACE             = "://images/fear_32.png";
 const QString HAPPY_FACE            = "://images/happy_32.png";
 
+// Icon size
 const int32_t FIELD_SIZE        = 24;
 const int32_t ICON_SIZE         = 16;
 
+// Default game preferences
 const int32_t DEFAULT_HEIGHT    = 10;
 const int32_t DEFAULT_WIDTH     = 10;
 const int32_t DEFAULT_SHEEP     = 10;

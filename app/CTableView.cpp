@@ -6,7 +6,9 @@ namespace SSw
 {
 
 CTableView::CTableView(QWidget *parent)
-    : QTableView(parent)
+    : QTableView(parent),
+      m_activeDelegate(),
+      m_inactiveDelegate()
 {
     setShowGrid(false);
     horizontalHeader()->hide();
@@ -78,6 +80,19 @@ void CTableView::adjustSizeToContents()
     int32_t h = rowHeight(1) * model()->rowCount() + 2;
     int32_t w = columnWidth(1) * model()->columnCount() + 2;
     setFixedSize(w, h);
+}
+
+void CTableView::activate()
+{
+    reset();
+    setEnabled(true);
+    setItemDelegate(&m_activeDelegate);
+}
+
+void CTableView::deactivate()
+{
+    setItemDelegate(&m_inactiveDelegate);
+    setDisabled(true);
 }
 
 } // namespace SSw

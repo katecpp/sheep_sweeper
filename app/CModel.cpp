@@ -24,10 +24,9 @@ bool CModel::checkIfWon() const
 
 void CModel::reset(int32_t width, int32_t height, int32_t sheepNumber)
 {
-    qDebug() << "CModel::reset " << width << ", " << height << ", " << sheepNumber;
-    m_width = width;
-    m_height = height;
-    m_totalSheepNr = sheepNumber;
+    m_width         = width;
+    m_height        = height;
+    m_totalSheepNr  = sheepNumber;
     m_discoveredFieldsNr = 0;
     m_data.clear();
 
@@ -46,7 +45,7 @@ void CModel::populate(int32_t x, int32_t y)
 
 void CModel::populateSheepCrew(int32_t x, int32_t y)
 {
-    Q_ASSERT(m_totalSheepNr <= size());
+    Q_ASSERT(m_totalSheepNr < size());
     uint64_t noSheepFieldId = y * m_width + x;
     int64_t sheepMade       = 0;
 

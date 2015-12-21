@@ -7,7 +7,6 @@
 #include <CTopWidget.h>
 #include <Constants.h>
 #include <CSettingsDialog.h>
-#include <CActiveDelegate.h>
 
 namespace SSw
 {
@@ -18,8 +17,6 @@ MainWindow::MainWindow(QWidget *parent) :
     m_model(),
     m_timer(),
     m_prefs(),
-    m_activeDelegate(),
-    m_inactiveDelegate(),
     m_translator()
 {
     ui->setupUi(this);
@@ -50,7 +47,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::initTable()
 {
     ui->m_view->setModel(&m_model);
-    ui->m_view->setItemDelegate(&m_activeDelegate);
+    ui->m_view->activate();
 }
 
 void MainWindow::initMenubar()
@@ -67,18 +64,18 @@ void MainWindow::initMenubar()
     QAction *quitAction = fileMenu->addAction(tr("E&xit"));
     quitAction->setShortcut(QKeySequence::Quit);
 
-    QMenu *helpMenu = new QMenu(tr("&Help"), this);
-    QAction *aboutAction = helpMenu->addAction(tr("&About"));
-
     QMenu *languageMenu = new QMenu(tr("&Language"), this);
     QAction *setPlAction = languageMenu->addAction(tr("&Polish"));
     QAction *setEngAction = languageMenu->addAction(tr("&English"));
 
+    QMenu *helpMenu = new QMenu(tr("&Help"), this);
+    QAction *aboutAction = helpMenu->addAction(tr("&About"));
+
     menuBar()->addMenu(fileMenu);
     menuBar()->addSeparator();
-    menuBar()->addMenu(helpMenu);
-    menuBar()->addSeparator();
     menuBar()->addMenu(languageMenu);
+    menuBar()->addSeparator();
+    menuBar()->addMenu(helpMenu);
 
     connect(quitAction,         &QAction::triggered, qApp, &QApplication::quit);
     connect(newGameAction,      &QAction::triggered, this, &MainWindow::newGame);
@@ -122,10 +119,8 @@ void MainWindow::newGame()
     m_timer.stop();
 
     m_model.resetModel(m_prefs.height, m_prefs.width, m_prefs.sheep);
-    ui->m_view->reset();
     ui->m_view->setModel(&m_model);
-    ui->m_view->setEnabled(true);
-    ui->m_view->setItemDelegate(&m_activeDelegate);
+    ui->m_view->activate();
     ui->topWidget->resetTimer();
     ui->topWidget->setDefault();
     statusBar()->showMessage(tr("Good luck!"), MSG_TIMEOUT);
@@ -134,19 +129,16 @@ void MainWindow::newGame()
 
 void MainWindow::onGameLost()
 {
-    qDebug() << "OnGameLost";
     m_timer.stop();
+    ui->m_view->deactivate();
     statusBar()->showMessage(tr("Unfortunately, you died."), MSG_TIMEOUT);
-    ui->m_view->setItemDelegate(&m_inactiveDelegate);
-    ui->m_view->setDisabled(true);
 }
 
 void MainWindow::onGameWon()
 {
     m_timer.stop();
+    ui->m_view->deactivate();
     statusBar()->showMessage(tr("You won!"), MSG_TIMEOUT);
-    ui->m_view->setItemDelegate(&m_inactiveDelegate);
-    ui->m_view->setDisabled(true);
 }
 
 void MainWindow::showPreferences()
