@@ -3,10 +3,12 @@
 
 #include <QAbstractItemDelegate>
 #include <QModelIndex>
-#include <SField.h>
+#include <QStylePainter>
 
 namespace SSw
 {
+
+struct SField;
 
 class CActiveDelegate : public QAbstractItemDelegate
 {

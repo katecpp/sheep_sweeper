@@ -4,9 +4,9 @@
 #include <QHBoxLayout>
 #include <QSettings>
 #include <QDebug>
-#include <CTopWidget.h>
+#include <view/CTopWidget.h>
 #include <Constants.h>
-#include <CSettingsDialog.h>
+#include <view/CSettingsDialog.h>
 
 namespace SSw
 {
@@ -191,7 +191,6 @@ void MainWindow::changeEvent(QEvent* event)
         ui->retranslateUi(this);
     }
 
-    // remember to call base class implementation
     QMainWindow::changeEvent(event);
 }
 

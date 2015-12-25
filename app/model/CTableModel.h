@@ -2,7 +2,7 @@
 #define CTABLEMODEL_H
 
 #include <QAbstractTableModel>
-#include <CModel.h>
+#include <model/CModel.h>
 
 namespace SSw
 {

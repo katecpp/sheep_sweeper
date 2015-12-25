@@ -1,7 +1,7 @@
 #ifndef CINACTIVEDELEGATE_H
 #define CINACTIVEDELEGATE_H
 
-#include <CActiveDelegate.h>
+#include <view/CActiveDelegate.h>
 
 namespace SSw
 {

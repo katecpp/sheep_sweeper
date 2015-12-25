@@ -5,32 +5,34 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TEMPLATE = app
 
 HEADERS += \
-    SField.h \
-    CTopWidget.h \
-    CTableView.h \
-    mainwindow.h \
-    CSettingsDialog.h \
-    SPreferences.h \
-    CTableModel.h \
     Constants.h \
-    CModel.h \
-    CInactiveDelegate.h \
-    CActiveDelegate.h
+    mainwindow.h \
+    model/CModel.h \
+    model/CTableModel.h \
+    model/SField.h \
+    SPreferences.h \
+    view/CActiveDelegate.h \
+    view/CInactiveDelegate.h \
+    view/CSettingsDialog.h \
+    view/CTableView.h \
+    view/CTopWidget.h
+
 
 SOURCES += main.cpp \
-    CSettingsDialog.cpp \
-    CModel.cpp \
-    CTableModel.cpp \
-    CTableView.cpp \
     mainwindow.cpp \
-    CTopWidget.cpp \
-    CInactiveDelegate.cpp \
-    CActiveDelegate.cpp
+    model/CModel.cpp \
+    model/CTableModel.cpp \
+    view/CActiveDelegate.cpp \
+    view/CInactiveDelegate.cpp \
+    view/CSettingsDialog.cpp \
+    view/CTableView.cpp \
+    view/CTopWidget.cpp
+
 
 FORMS += \
     mainwindow.ui \
-    CTopWidget.ui \
-    CSettingsDialog.ui
+    view/CTopWidget.ui \
+    view/CSettingsDialog.ui
 
 CONFIG       += c++14
 RESOURCES    += images.qrc

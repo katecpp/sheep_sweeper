@@ -1,4 +1,4 @@
-#include <CSettingsDialog.h>
+#include <view/CSettingsDialog.h>
 #include <ui_CSettingsDialog.h>
 #include <Constants.h>
 

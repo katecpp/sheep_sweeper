@@ -3,8 +3,8 @@
 
 #include <QTableView>
 #include <QMouseEvent>
-#include <CActiveDelegate.h>
-#include <CInactiveDelegate.h>
+#include <view/CActiveDelegate.h>
+#include <view/CInactiveDelegate.h>
 
 namespace SSw
 {

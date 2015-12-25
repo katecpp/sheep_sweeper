@@ -1,4 +1,4 @@
-#include <CTableModel.h>
+#include <model/CTableModel.h>
 #include <QPixmap>
 #include <QSize>
 #include <QDebug>

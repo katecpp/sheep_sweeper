@@ -1,4 +1,4 @@
-#include <CTopWidget.h>
+#include <view/CTopWidget.h>
 #include <ui_CTopWidget.h>
 #include <Constants.h>
 #include <QPixmap>

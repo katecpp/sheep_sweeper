@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #include <vector>
-#include <SField.h>
+#include <model/SField.h>
 
 namespace SSw
 {

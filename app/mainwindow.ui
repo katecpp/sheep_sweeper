@@ -102,13 +102,13 @@
   <customwidget>
    <class>SSw::CTopWidget</class>
    <extends>QWidget</extends>
-   <header location="global">CTopWidget.h</header>
+   <header location="global">view/CTopWidget.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>SSw::CTableView</class>
    <extends>QTableView</extends>
-   <header>CTableView.h</header>
+   <header>view/CTableView.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

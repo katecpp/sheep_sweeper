@@ -1,4 +1,5 @@
-#include <CInactiveDelegate.h>
+#include <view/CInactiveDelegate.h>
+#include <model/SField.h>
 #include <Constants.h>
 
 namespace SSw

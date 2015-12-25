@@ -1,5 +1,5 @@
-#include <CTableView.h>
-#include <CActiveDelegate.h>
+#include <view/CTableView.h>
+#include <view/CActiveDelegate.h>
 #include <QHeaderView>
 
 namespace SSw

@@ -1,6 +1,6 @@
-#include <CActiveDelegate.h>
+#include <view/CActiveDelegate.h>
+#include <model/SField.h>
 #include <Constants.h>
-#include <QStylePainter>
 #include <QApplication>
 
 namespace SSw

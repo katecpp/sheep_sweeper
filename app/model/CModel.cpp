@@ -1,4 +1,4 @@
-#include <CModel.h>
+#include <model/CModel.h>
 #include <cstdlib>
 #include <ctime>
 #include <QDebug>

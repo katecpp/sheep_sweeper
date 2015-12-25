@@ -4,8 +4,8 @@
 #include <QMainWindow>
 #include <QTimer>
 #include <QTranslator>
-#include <CTableModel.h>
-#include <CTableView.h>
+#include <model/CTableModel.h>
+#include <view/CTableView.h>
 #include <SPreferences.h>
 
 namespace Ui {
