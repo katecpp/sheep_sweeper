@@ -1,7 +1,6 @@
 #include <model/CTableModel.h>
 #include <QPixmap>
 #include <QSize>
-#include <QDebug>
 
 namespace SSw
 {
@@ -11,10 +10,6 @@ CTableModel::CTableModel(QObject *parent)
       m_model(),
       m_sheepDisplay(0),
       m_initialized(false)
-{
-}
-
-CTableModel::~CTableModel()
 {
 }
 
@@ -74,7 +69,6 @@ void CTableModel::discover(const QModelIndex &index)
 {
     if (!m_initialized)
     {
-        qDebug() << "First click!";
         init(index);
     }
 
@@ -99,12 +93,10 @@ void CTableModel::discover(const QModelIndex &index)
 
     if (m_model.field(x, y).sheep && m_model.field(x, y).disarmed == 0)
     {
-        qDebug() << "You loose! : " << x << "," << y;
         emit gameLost();
     }
-    else if (m_model.checkIfWon())
+    else if (m_model.checkWinCondition())
     {
-        qDebug() << "You win!";
         emit gameWon();
     }
 }

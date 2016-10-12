@@ -3,7 +3,6 @@
 #include <QMessageBox>
 #include <QHBoxLayout>
 #include <QSettings>
-#include <QDebug>
 #include <view/CTopWidget.h>
 #include <Constants.h>
 #include <view/CSettingsDialog.h>
@@ -16,8 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_model(),
     m_timer(),
-    m_prefs(),
-    m_translator()
+    m_prefs()
 {
     ui->setupUi(this);
 
@@ -64,16 +62,10 @@ void MainWindow::initMenubar()
     QAction *quitAction = fileMenu->addAction(tr("E&xit"));
     quitAction->setShortcut(QKeySequence::Quit);
 
-    QMenu *languageMenu = new QMenu(tr("&Language"), this);
-    QAction *setPlAction = languageMenu->addAction(tr("&Polish"));
-    QAction *setEngAction = languageMenu->addAction(tr("&English"));
-
     QMenu *helpMenu = new QMenu(tr("&Help"), this);
     QAction *aboutAction = helpMenu->addAction(tr("&About"));
 
     menuBar()->addMenu(fileMenu);
-    menuBar()->addSeparator();
-    menuBar()->addMenu(languageMenu);
     menuBar()->addSeparator();
     menuBar()->addMenu(helpMenu);
 
@@ -81,9 +73,6 @@ void MainWindow::initMenubar()
     connect(newGameAction,      &QAction::triggered, this, &MainWindow::newGame);
     connect(preferencesAction,  &QAction::triggered, this, &MainWindow::showPreferences);
     connect(aboutAction,        &QAction::triggered, this, &MainWindow::showAboutBox);
-    // TODO: setting language
-    connect(setPlAction,        &QAction::triggered, this, &MainWindow::setLanguage);
-    //    connect(setEngAction,       &QAction::triggered, this, &MainWindow::setLanguage);
 }
 
 void MainWindow::initTimer()
@@ -151,21 +140,6 @@ void MainWindow::showPreferences()
     }
 }
 
-void MainWindow::setLanguage()
-{
-    bool result = m_translator.load("trans_pl");
-
-    if (!result)
-    {
-        qWarning("Failed to load the translation file");
-    }
-    else
-    {
-        qApp->installTranslator(&m_translator);
-        ui->retranslateUi(this);
-    }
-}
-
 void MainWindow::showAboutBox()
 {
     QMessageBox::about(this, APP, tr("Try to avoid the furious sheep.<br>\
@@ -179,19 +153,6 @@ void MainWindow::updateView()
 {
     ui->m_view->adjustSizeToContents();
     layout()->setSizeConstraint(QLayout::SetFixedSize);
-}
-
-void MainWindow::changeEvent(QEvent* event)
-{
-    qDebug() << "Retranslate ui";
-
-    if (event->type() == QEvent::LanguageChange)
-    {
-        // retranslate designer form (single inheritance approach)
-        ui->retranslateUi(this);
-    }
-
-    QMainWindow::changeEvent(event);
 }
 
 void MainWindow::loadSettings()

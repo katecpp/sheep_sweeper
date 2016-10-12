@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include <QTranslator>
 #include <model/CTableModel.h>
 #include <view/CTableView.h>
 #include <SPreferences.h>
@@ -24,7 +23,6 @@ public:
     ~MainWindow();
 
     void closeEvent(QCloseEvent *event);
-    void changeEvent(QEvent *event);
 
 public slots:
     void newGame();
@@ -41,13 +39,11 @@ private:
     void initTimer();
     void loadSettings();
     void saveSettings();
-    void setLanguage();
 
     Ui::MainWindow*     ui;
     CTableModel         m_model;
     QTimer              m_timer;
     SPreferences        m_prefs;
-    QTranslator         m_translator;
 };
 
 } // namespace SSw

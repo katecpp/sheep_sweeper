@@ -16,10 +16,10 @@ public:
     CActiveDelegate(QObject *parent = 0);
 
     virtual void paint(QPainter *painter, const QStyleOptionViewItem &option,
-               const QModelIndex &index) const Q_DECL_OVERRIDE;
+               const QModelIndex &index) const override;
 
     virtual QSize sizeHint(const QStyleOptionViewItem &option,
-                   const QModelIndex &index ) const Q_DECL_OVERRIDE;
+                   const QModelIndex &index ) const override;
 
 protected:
     virtual void getStyleForField(const SField& field,
